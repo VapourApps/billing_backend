@@ -74,7 +74,7 @@ class CompanyPagePricing(models.Model):
     pricing_details = models.CharField(max_length = 500)
 
     def __unicode__(self):
-        return 'Pricing for ', self.company_page.company_name
+        return 'Pricing for ' + self.company_page.company_name
 
 class CompanyPageSignup(models.Model):
     company_page = models.ForeignKey(CompanyPage, on_delete = models.CASCADE, default = None)

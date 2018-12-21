@@ -25,12 +25,17 @@ class PlanSteps(models.Model):
         return 'Step type %s for %s' % (self.step_input_type, self.belongs_to.plan.__unicode__())
 
 
+class MappingType(models.Model):
+    name = models.CharField(max_length = 20)
+
+    def __unicode__(self):
+        return self.name
+
 class UserCustomerMapping(models.Model):
-    relation_type_choices = [('partner', 'Partner'), ('it_admin', 'IT Admin'), ('owner', 'Owner')]
 
     customer = models.ForeignKey(Customer, on_delete = models.CASCADE)
     user = models.ForeignKey(User, on_delete = models.CASCADE)
-    relation_type = models.CharField(max_length = 8, choices = relation_type_choices)
+    relation_type = models.ForeignKey(MappingType, on_delete = models.CASCADE)
 
     def __unicode__(self):
-        return 'Relation between %s and %s (%s)' % (self.customer.__unicode__(), self.user.__unicode__(), self.relation_type)
+        return 'Relation between %s and %s (%s)' % (self.customer.__unicode__(), self.user.__unicode__(), self.relation_type.name)

@@ -20,6 +20,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
+import rest_framework_jwt.views as JWT
+
 
 
 from .models import CompanyPageLanding, CompanyPagePricing, CompanyPageAbout, CompanyPage, CompanyPageFeature, CompanyPageFeaturesList
@@ -29,6 +31,10 @@ import requests, json
 from silver.models import Customer, Invoice
 from silver_extensions.models import UserCustomerMapping
 
+def obtain_jwt_token(response):
+    print ('In my view')
+    print ('Rseponse : ', response.POST)
+    return JWT.obtain_jwt_token(response)
 
 def check_activation_token(uidb64, token):
     try:

@@ -3,7 +3,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 from . import views
 
 urlpatterns = [
-    url(r'token-auth', obtain_jwt_token),
+    url(r'token-auth', views.obtain_jwt_token),
     url(r'get-user', views.current_user),
     url(r'change_user_password', views.change_user_password),
     url(r'users/', views.UserList.as_view()),
