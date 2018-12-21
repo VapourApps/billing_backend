@@ -134,3 +134,7 @@ dmypy.json
 # Creds and other files used in settings.py
 va_purchase_project/creds.py
 va_purchase_project/braintree_id.py
+va_saas/migrations/
+va_silver/migrations/
+silver_extensions/migrations
+va_billing_venv/

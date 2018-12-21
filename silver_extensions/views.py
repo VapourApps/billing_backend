@@ -61,7 +61,7 @@ def get_customers(request):
     user_relationship = se.UserCustomerMapping.objects.filter(user_id = request.user.id).all()
 
     customers = [model_to_dict(x.customer) for x in user_relationship]
-
+    print ('customers', customers)
     result = {'sucess' : True, 'data' : customers, 'message' : ''}
     return JsonResponse(result)
 
@@ -77,6 +77,9 @@ def get_subscriptions(request):
     subscriptions = [{
 	'id': subscription.id,
 	'customer_id': customer.id,
+        'first_name' : customer.first_name, 
+        'last_name' : customer.last_name,
+        'address' : customer.address_1,
         'description' : subscription.description, 
         'plan_name' : subscription.plan.name,
         'state' : subscription.state, 
