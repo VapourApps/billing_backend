@@ -229,5 +229,5 @@ SERVER_EMAIL = SERVER_EMAIL or None
 
 # Media settings, for uploading images. 
 
-MEDIA_ROOT = '/var/www/va_billing_api/va_purchase_project/media'
+MEDIA_ROOT = '/var/www/billing_backend/va_purchase_project/media'
 MEDIA_URL = '/media/'
