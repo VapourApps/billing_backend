@@ -65,23 +65,29 @@ def get_customers(request):
     result = {'sucess' : True, 'data' : customers, 'message' : ''}
     return JsonResponse(result)
 
+@api_view(['POST'])
+def edit_customer(request):
+    customer_mail = request.POST['email']
+    customer_data = request.POST['customer_data']
+    customer = Customer.objects.filter(email = customer_mail)
+    for key, value in customer_data.items():
+        setattr(customer, key, value)
+    customer.save()
 
 def get_subscriptions(request):
     #This seems weird - user is not in fact the current user, but this seems to set request.user to the correct user. 
     #TODO get this to work in a sane manner, as this is really weird behaviour
     user = current_user(request)
 
-    print ('User is : ', user)
     user_relationship = se.UserCustomerMapping.objects.filter(user_id = request.user.id).all()
-    print ('Mapping is : ', user_relationship)
     customers = [x.customer for x in user_relationship]
-    print ('Customers : ', customers)
     subscriptions = [{
 	'id': subscription.id,
 	'customer_id': customer.id,
         'first_name' : customer.first_name, 
         'last_name' : customer.last_name,
         'address' : customer.address_1,
+        'phone' : customer.phone,
         'description' : subscription.description, 
         'plan_name' : subscription.plan.name,
         'state' : subscription.state, 
