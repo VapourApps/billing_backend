@@ -91,6 +91,10 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES' : (
+        'rest_framework.renderers.JSONRenderer', 
+        'rest_framework.renderers.BrowsableAPIRenderer', 
+    ), 
     'DEFAULT_PERMISSION_CLASSES' : (
         'rest_framework.permissions.IsAuthenticated',
     ),
@@ -231,3 +235,8 @@ SERVER_EMAIL = SERVER_EMAIL or None
 
 MEDIA_ROOT = '/var/www/billing_backend/va_purchase_project/media'
 MEDIA_URL = '/media/'
+
+# VA stuff
+
+from va_settings import *
+

@@ -137,4 +137,5 @@ va_purchase_project/braintree_id.py
 va_saas/migrations/
 silver_extensions/migrations/
 va_billing_venv
+va_purchase_project/va_settings.py
 

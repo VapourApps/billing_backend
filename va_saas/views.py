@@ -47,15 +47,19 @@ def check_activation_token(uidb64, token):
     return False
 
 @permission_classes((AllowAny, ))
+@api_view(['GET'])
 def activate(request, uidb64, token):
     uid = check_activation_token(uidb64, token)
+    print ('UID is : ', uid)
     if uid:
         user = User.objects.get(pk=uid)
+        print ('User is :', user)
         user.is_active = True
         user.save()
         login(request, user)
         return redirect('https://billing.vapour-apps.com/')
     else:
+        print ('Invalid!')
         return Response('Activation link is invalid!', status = 400)
 
 @api_view(['POST'])
@@ -153,8 +157,6 @@ class UserList(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
-        print ("Post data is : ", request.POST)
-        print ('Request data : ', request.data)
         serializer = UserSerializerWithToken(data=request.data)
         if serializer.is_valid():
             serializer.save()

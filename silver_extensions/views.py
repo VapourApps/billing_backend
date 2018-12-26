@@ -71,9 +71,11 @@ def get_subscriptions(request):
     #TODO get this to work in a sane manner, as this is really weird behaviour
     user = current_user(request)
 
+    print ('User is : ', user)
     user_relationship = se.UserCustomerMapping.objects.filter(user_id = request.user.id).all()
+    print ('Mapping is : ', user_relationship)
     customers = [x.customer for x in user_relationship]
-
+    print ('Customers : ', customers)
     subscriptions = [{
 	'id': subscription.id,
 	'customer_id': customer.id,
@@ -95,6 +97,7 @@ def get_subscriptions(request):
         'currency' : subscription.plan.currency,
     } for customer in customers for subscription in customer.subscriptions.all()]
 
+    print ('ALl is', subscriptions)
     result = {'success' : True, 'data' : subscriptions, 'message' : ''}
 
     return JsonResponse(result)
