@@ -4,6 +4,10 @@ from __future__ import unicode_literals
 from django.db import models
 from silver.models import Plan
 
+class VAHook(AbstractHook):
+    headers = models.CharField(max_length = 200i, default = '{}')
+    method = models.CharField(max_length = 6, default = 'GET')
+
 class CompanyPage(models.Model):
     company_name = models.CharField(max_length = 100)
 

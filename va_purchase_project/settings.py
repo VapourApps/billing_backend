@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'va_saas',
     'silver_extensions',
+    'rest_hooks', 
 ]
 
 JWT_AUTH = {
@@ -233,8 +234,16 @@ SERVER_EMAIL = SERVER_EMAIL or None
 
 # Media settings, for uploading images. 
 
-MEDIA_ROOT = '/var/www/billing_backend/va_purchase_project/media'
+MEDIA_ROOT = '/var/www/billing_backend_novobox/va_purchase_project/media'
 MEDIA_URL = '/media/'
+
+#django-rest-hooks settings, for creating webhooks
+
+HOOK_EVENTS = {
+        'customer.added' : 'silver.customer.created',
+}
+
+HOOK_DELIVERER = 'va_saas.views.rest_hook_handler'
 
 # VA stuff
 
