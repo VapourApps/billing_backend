@@ -31,17 +31,6 @@ import requests, json
 from silver.models import Customer, Invoice
 from silver_extensions.models import UserCustomerMapping
 
-def rest_hook_handler(target, payload, instance, hook):
-    print ("I have ", target, payload, instance, hook)
-
-    kwargs = {
-        'headers' : json.loads(hook.headers) or {'Content-type' : "application/json"}, 
-        'data' : payload, 
-        
-    }
-    data = getattr(requests, hook.method)(target, **kwargs)
-    print (data)
-
 
 def obtain_jwt_token(response):
     print ('In my view')

@@ -17,7 +17,7 @@ class PlanFeatures(models.Model):
 
 class PlanSteps(models.Model):
     step_input_type = models.CharField(max_length = 20)
-    step_value = models.CharField(max_length = 30, blank = True)
+    step_value = models.CharField(max_length = 50, blank = True)
     step_name = models.CharField(max_length = 30)
     belongs_to = models.ForeignKey(PlanFeatures, on_delete = models.CASCADE)
 

@@ -240,10 +240,11 @@ MEDIA_URL = '/media/'
 #django-rest-hooks settings, for creating webhooks
 
 HOOK_EVENTS = {
-        'customer.added' : 'silver.customer.created',
+        'customer.added' : 'silver.customer.created+',
 }
 
-HOOK_DELIVERER = 'va_saas.views.rest_hook_handler'
+HOOK_DELIVERER = 'va_saas.webhooks.rest_hook_handler'
+HOOK_FINDER = 'va_saas.webhooks'
 
 # VA stuff
 
