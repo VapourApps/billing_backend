@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'va_saas',
     'silver_extensions',
+    'silver_cpay'
 ]
 
 JWT_AUTH = {
@@ -208,6 +209,9 @@ PAYMENT_PROCESSORS = {
     'braintree_recurring': {
         'class': 'silver_braintree.payment_processors.BraintreeTriggeredRecurring',
         'setup_data': braintree_setup_data,
+    },
+    'cpay': {
+        'class': 'silver_cpay.payment_processors.CpayTriggered',
     }
 }
 
