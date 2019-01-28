@@ -12,14 +12,19 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import datetime
 import os, braintree
 
+from creds import SECRET_KEY
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = SECRET_KEY or ''
+
 try:
     import braintree_id
     import creds
 except: 
     raise Exception("To use this django app, you must have a creds.py and braintree_id.py file with certain data. braintree_id needs the BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY and BRAINTREE_PRIVATE_KEY variables, and creds needs SECRET_KEY (which holds the django secret key) as well as EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL and SERVER_EMAIL variables. These are excluded from the repo for security reasons. ")
 
+import custom_apps
 from braintree_id import BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY, BRAINTREE_PRIVATE_KEY
-from creds import SECRET_KEY
 
 BRAINTREE_MERCHANT_ID = BRAINTREE_MERCHANT_ID or None
 BRAINTREE_PUBLIC_KEY = BRAINTREE_PUBLIC_KEY or None
@@ -33,8 +38,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRET_KEY or ''
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -69,6 +73,8 @@ INSTALLED_APPS = [
     'va_saas',
     'silver_extensions',
 ]
+
+INSTALLED_APPS += custom_apps.INSTALLED_APPS
 
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),

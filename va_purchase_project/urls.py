@@ -19,6 +19,8 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 from django.contrib import admin
 
+import custom_apps
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^silver/', include('silver.urls')),
@@ -26,3 +28,5 @@ urlpatterns = [
     url(r'^va_silver/', include('silver_extensions.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+
+urlpatterns += custom_apps.urlpatterns

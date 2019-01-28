@@ -138,15 +138,18 @@ def map_customer_user(request):
 @api_view(['POST'])
 def change_user_password(request):
     data = request.data
+    print("DATA")
+    print(data)
     if not all([x in data.keys() for x in ['username', 'old_password', 'new_password']]):
         return Response('Requires 3 POST arguments : username, old_password and new_password. ', status = 400)
 
     user = authenticate(username = data['username'], password = data['old_password'])
+    print(user)
     if not user: 
         return Response('Could not authenticate user with supplied credentials. ', status = 401)
     user.set_password(data['new_password'])
     user.save()
-    return Response('Success!')
+    return Response('Success!');
 
 class UserList(APIView):
     """
@@ -204,18 +207,17 @@ def get_invoices(request):
 
     user_relationship = UserCustomerMapping.objects.filter(user_id = request.user.id).all()
     customers = [x.customer for x in user_relationship]
-    invoices = []
+    invoices_result = []
     for customer in customers: 
 
-        invoice = Invoice.objects.filter(customer = customer).all()
-        if invoice:
-            invoice = invoice[0]
+        invoices = Invoice.objects.filter(customer = customer).all()
+        for invoice in invoices:
             invoice = {
-                x : str(getattr(invoice, x)) for x in ["kind", "related_document", "series", "number", "customer", "provider", "archived_customer", "archived_provider", "due_date", "issue_date", "paid_date", "cancel_date", "sales_tax_percent", "sales_tax_name", "currency", "transaction_currency", "transaction_xe_rate", "transaction_xe_date", "pdf", "state"]
+                x : str(getattr(invoice, x)) for x in ["kind", "related_document", "series", "number", "customer", "provider", "archived_customer", "archived_provider", "due_date", "issue_date", "paid_date", "cancel_date", "sales_tax_percent", "sales_tax_name", "currency", "transaction_currency", "transaction_xe_rate", "transaction_xe_date", "pdf", "state", "total"]
             }
-            invoices.append(invoice)
+            invoices_result.append(invoice)
 
-    data = {"success" : True, "message" : "", "data" : invoices}
+    data = {"success" : True, "message" : "", "data" : invoices_result}
     return HttpResponse(json.dumps(data))
    
 def get_plans(request):
