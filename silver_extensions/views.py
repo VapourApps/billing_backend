@@ -4,14 +4,16 @@ from __future__ import unicode_literals
 from rest_framework.decorators import api_view, permission_classes
 
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.forms.models import model_to_dict
 from django.core import serializers
 from silver import models as s
 from va_saas.views import current_user
+from django.urls import reverse
+from silver_cpay.views import generate_cpay_form
 
 from . import models as se
-
+from silver_cpay.models import Payment_Request
 
 def get_plans(request):
     enabled = request.GET.get('enabled', True)
@@ -107,3 +109,34 @@ def get_subscriptions(request):
     result = {'success' : True, 'data' : subscriptions, 'message' : ''}
 
     return JsonResponse(result)
+
+
+def cpay_payment_ok(request, cpay_request_id=None):
+    print(cpay_request_id)
+    cpay_request = Payment_Request.objects.get(id=cpay_request_id)
+    return HttpResponse("Your payment success page. Payment request ID:{}".format(cpay_request.id))
+
+
+def cpay_payment_fail(request, cpay_request_id=None):
+    cpay_request = Payment_Request.objects.get(id=cpay_request_id)
+    return HttpResponse("Your payment fail page. Payment request ID: {}".format(cpay_request.id))
+
+
+def pay_select(request):
+    # you custom code goes here
+    return render(request, 'silver_extensions/pay_select.html', {
+        'pay_confirm_url': request.build_absolute_uri(reverse('pay-confirm')),
+        'redirect_ok_url': request.build_absolute_uri(reverse('pay-ok')),
+        'redirect_fail_url': request.build_absolute_uri(reverse('pay-fail'))
+    })
+
+
+def pay_confirm(request):
+    # you custom code goes here
+
+    # at the end call the generate_cpay_form from silver_cpay, to generate the cpay form
+    # add the extra_context parameter for any additional template vars that you want
+    return generate_cpay_form(request, extra_context={
+        'custom_template_var_1': 'value_1',
+        'custom_template_var_2': 'value_2',
+    })
