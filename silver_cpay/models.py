@@ -1,11 +1,14 @@
 from django.db import models
-
+from silver.models import Proforma, Invoice
 
 class Payment_Request(models.Model):
-	proforma_ids = models.CharField(blank=True, null=True, max_length=5000)
-	invoice_ids = models.CharField(blank=True, null=True, max_length=5000)
+	#proforma_ids = models.CharField(blank=True, null=True, max_length=5000)
+	#invoice_ids = models.CharField(blank=True, null=True, max_length=5000)
 	redirect_ok_url = models.CharField(blank=True, null=True, max_length=2083)
 	redirect_fail_url = models.CharField(blank=True, null=True, max_length=2083)
+
+	proformas = models.ManyToManyField(Proforma, related_name='proforma_payment_requests')
+	invoices = models.ManyToManyField(Invoice, related_name='invoice_payment_requests')
 
 	status_choices = (
 		('generated', 'generated'),
@@ -27,3 +30,4 @@ class Notification(models.Model):
 	)
 
 	status = models.CharField(blank=False, null=False, max_length=9, choices=status_choices)
+

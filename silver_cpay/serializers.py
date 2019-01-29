@@ -1,11 +1,28 @@
-from rest_framework.serializers import ModelSerializer, ValidationError
+from rest_framework.serializers import ModelSerializer, ValidationError, CharField, Serializer
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError as django_default_validation_error
 
-from .models import Payment_Request
+from .models import Payment_Request, Notification
+
+
+class Notification_Serializer(ModelSerializer):
+	class Meta:
+		model = Notification
+		fields = "__all__"
 
 
 class Payment_Request_Serializer(ModelSerializer):
+	class Meta:
+		model = Payment_Request
+		fields = "__all__"
+
+
+class Payment_Request_Validation_Serializer(Serializer):
+	invoice_ids = CharField(max_length=5000)
+	proforma_ids = CharField(max_length=5000)
+	redirect_ok_url = CharField(max_length=2083)
+	redirect_fail_url = CharField(max_length=2083)
+
 	class Meta:
 		model = Payment_Request
 		fields = "__all__"
