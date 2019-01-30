@@ -1,12 +1,25 @@
-## Silver Cpay App
+# Silver Cpay App
 
 This is a django app for integrating a Cpay into Silver. 
 
-### Integration
+## Example usage
+
+An example implementation with Django template extension is done in `silver_extensions.views`
+
+There are four views created outside fo the Silve Cpay App that utilize the functionality of the app:
+
+- `silver_extensions.views.pay_select` 
+- `silver_extensions.views.pay_confirm`
+- `silver_extensions.views.cpay_payment_ok`
+- `silver_extensions.views.cpay_payment_fail`
+
+You can see the whole process, staring from this URL: `va_silver/pay_select`
+
+## Integration
 
 The module can work both by invoking the api endpoints, or usign and overriding the django HTML templates
 
-#### API Endpoint
+### API Endpoints
 
 Generate Parameters `POST /parameters`
 
@@ -21,5 +34,5 @@ Expected POST variables:
 
 implemented in `views.Cpay_View_Set.generate_parameters`
 
-#### Django Views and Templates
+### Django Views and Templates
 

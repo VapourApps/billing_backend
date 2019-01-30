@@ -112,18 +112,19 @@ def get_subscriptions(request):
 
 
 def cpay_payment_ok(request, cpay_request_id=None):
-    print(cpay_request_id)
+    # Your custom payment success web page
     cpay_request = Payment_Request.objects.get(id=cpay_request_id)
     return HttpResponse("Your payment success page. Payment request ID:{}".format(cpay_request.id))
 
 
 def cpay_payment_fail(request, cpay_request_id=None):
+    # Your custom payment faile web page
     cpay_request = Payment_Request.objects.get(id=cpay_request_id)
     return HttpResponse("Your payment fail page. Payment request ID: {}".format(cpay_request.id))
 
 
 def pay_select(request):
-    # you custom code goes here
+    # you custom code goes here, for selecting invoices
     return render(request, 'silver_extensions/pay_select.html', {
         'pay_confirm_url': request.build_absolute_uri(reverse('pay-confirm')),
         'redirect_ok_url': request.build_absolute_uri(reverse('pay-ok')),
@@ -132,7 +133,8 @@ def pay_select(request):
 
 
 def pay_confirm(request):
-    # you custom code goes here
+    # you custom code for payment confirmation goes here. 
+    # This is the page that is shown before the redirec to Cpay
 
     # at the end call the generate_cpay_form from silver_cpay, to generate the cpay form
     # add the extra_context parameter for any additional template vars that you want
