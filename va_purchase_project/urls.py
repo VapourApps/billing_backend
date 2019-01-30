@@ -19,14 +19,14 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 from django.contrib import admin
 
-import custom_apps
+from custom_apps.urls import urlpatterns as custom_urlpatterns
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^silver/', include('silver.urls')),
     url(r'^va_saas/', include('va_saas.urls')),
     url(r'^va_silver/', include('silver_extensions.urls')),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
-urlpatterns += custom_apps.urlpatterns
+urlpatterns += custom_urlpatterns
