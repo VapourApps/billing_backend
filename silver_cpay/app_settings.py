@@ -34,4 +34,5 @@ except AttributeError:
 # can not handle multiple currencies.
 # to do: currency conversion to MKD
 
-IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY = getattr(settings, 'IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY', True)
+
+IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY = getattr(settings, 'IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY', False)

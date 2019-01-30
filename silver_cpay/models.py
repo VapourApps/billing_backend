@@ -1,6 +1,7 @@
 from django.db import models
 from silver.models import Proforma, Invoice
 
+
 class Payment_Request(models.Model):
 	#proforma_ids = models.CharField(blank=True, null=True, max_length=5000)
 	#invoice_ids = models.CharField(blank=True, null=True, max_length=5000)
@@ -20,6 +21,12 @@ class Payment_Request(models.Model):
 		default='generated'
 	)
 
+	data = models.CharField(max_length=5000, blank=False, null=False)
+	post_url = models.CharField(max_length=2083, blank=False, null=False)
+
+	def __str__(self):
+		return "Cpay Payment Request {} {}".format(self.id, self.status)
+
 
 class Notification(models.Model):
 	payment_request = models.ForeignKey(Payment_Request)
@@ -30,4 +37,9 @@ class Notification(models.Model):
 	)
 
 	status = models.CharField(blank=False, null=False, max_length=9, choices=status_choices)
+
+	data = models.CharField(max_length=5000, blank=False, null=False)
+
+	def __str__(self):
+		return "Cpay Notification {} {} (Payment Request {})".format(self.id, self.status, self.payment_request_id)
 

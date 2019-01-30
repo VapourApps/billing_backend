@@ -7,13 +7,13 @@ class Cpay:
 	def __init__(self, password, is_testing=False, **kwargs):
 
 		param_options = [
-			{'name': 'PaymentOKURL', 'is_required': True},
-			{'name': 'PaymentFailURL', 'is_required': True},
+			{'name': 'PaymentOKURL', 'is_required': True, 'max_length': 500},
+			{'name': 'PaymentFailURL', 'is_required': True, 'max_length': 500},
 			{'name': 'AmountToPay', 'is_required': True},
 			{'name': 'AmountCurrency', 'is_required': True},
 			{'name': 'PayToMerchant', 'is_required': True},
-			{'name': 'Details1', 'is_required': True},
-			{'name': 'Details2', 'is_required': True},
+			{'name': 'Details1', 'is_required': True, 'max_length': 32},
+			{'name': 'Details2', 'is_required': True, 'max_length': 10},
 			{'name': 'MerchantName', 'is_required': True},
 			{'name': 'OriginalAmount', 'is_required': False},
 			{'name': 'OriginalCurrency', 'is_required': False},
@@ -39,12 +39,16 @@ class Cpay:
 			if param['is_required']:
 				try:
 					kwargs[param['name']]
-					self.params[param['name']] = kwargs[param['name']]
+					self.params[param['name']] = str(kwargs[param['name']])
+
 				except KeyError:
 					raise Exception('{} is a required parameter. You need to supply a value for it'.format(param))
 
 			else:
-				self.params[param['name']] = kwargs.get(param['name'], '')
+				self.params[param['name']] = str(kwargs.get(param['name'], ''))
+
+			if param.get('max_length'):
+				self.params[param['name']] = self.params[param['name']][:param.get('max_length')]
 
 		self.password = password
 

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 from itertools import chain
 
 from rest_framework.views import status
@@ -76,6 +77,17 @@ def generate_cpay_parameters(request):
 			'status': status.HTTP_400_BAD_REQUEST
 		}
 
+	if cpay_settings.IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY:
+		customer = Customer.objects.get(id=customer_ids.pop())
+		try:
+			customer.paymentmethod_set.get(payment_processor='cpay')
+		except PaymentMethod.DoesNotExist:
+			PaymentMethod.objects.create(
+				customer=customer,
+				payment_processor='cpay',
+				verified=True
+			)
+
 	payment_request = Payment_Request.objects.create(
 		redirect_ok_url=serializer.redirect_ok_url,
 		redirect_fail_url=serializer.redirect_fail_url
@@ -86,20 +98,11 @@ def generate_cpay_parameters(request):
 	for proforma in proformas:
 		payment_request.proformas.add(proforma)
 
-	customer = Customer.objects.get(id=customer_ids.pop())
-	try:
-		customer.paymentmethod_set.get(payment_processor='cpay')
-	except PaymentMethod.DoesNotExist:
-		PaymentMethod.objects.create(
-			customer=customer,
-			payment_processor='cpay',
-			verified=True
-		)
-
+	transaction_details = request.POST.get('transaction_details', str(cpay_settings.CPAY_MERCHANT_NAME))
 	post_data = {
 		'AmountToPay': str(total * 100),
 		'AmountCurrency': 'MKD',
-		'Details1': payment_request.id,
+		'Details1': str(transaction_details),
 		'Details2': payment_request.id,
 		'PayToMerchant': str(cpay_settings.CPAY_MERCHANT_ID),
 		'MerchantName': str(cpay_settings.CPAY_MERCHANT_NAME),
@@ -107,7 +110,12 @@ def generate_cpay_parameters(request):
 		'PaymentFailURL': request.build_absolute_uri(reverse('cpay-payment-fail')),
 	}
 
+
 	cpay_obj = Cpay(password=cpay_settings.CPAY_PASSWORD, is_testing=False, **post_data)
+
+	payment_request.data = json.dumps(dict(cpay_obj.params))
+	payment_request.post_url = cpay_obj.url
+	payment_request.save()
 
 	return {'data': {'parameters': cpay_obj.params, 'url': cpay_obj.url}, 'status': status.HTTP_200_OK}
 
@@ -133,7 +141,13 @@ class Cpay_View_Set(viewsets.ViewSet):
 
 		cpay_obj = Cpay(password=cpay_settings.CPAY_PASSWORD, is_testing=False, **request.data)
 
-		notification = Notification.objects.create(payment_request=payment_request, status=status)
+		data = {}
+		for key in request.data:
+			data[key] = request.data.get(key)
+
+		data = json.dumps(data)
+
+		notification = Notification.objects.create(payment_request=payment_request, status=status, data=data)
 
 		if status == 'success':
 			invoices = payment_request.invoices.all().select_related('customer')
@@ -145,37 +159,19 @@ class Cpay_View_Set(viewsets.ViewSet):
 				total += int(document.total)
 				customer = document.customer
 
-			payment_method = None
-			try:
-				payment_method = customer.paymentmethod_set.get(payment_processor='cpay')
-			except PaymentMethod.DoesNotExist:
-				payment_method = PaymentMethod.objects.create(
-					customer=customer,
-					payment_processor='cpay',
-					verified=True
-				)
+			if cpay_settings.IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY:
+				payment_method = None
+				try:
+					payment_method = customer.paymentmethod_set.get(payment_processor='cpay')
+				except PaymentMethod.DoesNotExist:
+					payment_method = PaymentMethod.objects.create(
+						customer=customer,
+						payment_processor='cpay',
+						verified=True
+					)
 
-			"""
-			transaction_data = {
-				'amount': int(request.data.get('AmountToPay')) / 100,
-				'currency': 'MKD',
-				'payment_method_id': payment_method.id,
-				'external_reference': request.data.get('cPayPaymentRef'),
-				'state': 'settled'  # (options: 'initial', 'pending', 'settled', 'failed', 'canceled', 'refunded')
-			}
 
-			# if the payment was linked to a single invoice or proforma, add it in the transaction
-			if len(invoices) == 1:
-				transaction_data['invoice'] = invoices[0]
-			elif len(proformas) == 1:
-				transaction_data['proforma'] = proformas[0]
-
-			print(transaction_data)
-
-			Transaction.objects.create(**transaction_data)
-			"""
-
-			# if there is a mismatc between the amount from cpay, and the document total
+			# if there is a mismatch between the amount from cpay, and the document total
 			# notify the admins and dont update the documents
 			# this is highly unlikely, but just in case
 			if int(total * 100) == int(request.data.get('AmountToPay')):

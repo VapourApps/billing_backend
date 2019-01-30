@@ -20,19 +20,26 @@ class Payment_Request_Serializer(ModelSerializer):
 class Payment_Request_Validation_Serializer(Serializer):
 	invoice_ids = CharField(max_length=5000)
 	proforma_ids = CharField(max_length=5000)
-	redirect_ok_url = CharField(max_length=2083)
-	redirect_fail_url = CharField(max_length=2083)
+	redirect_ok_url = CharField(max_length=2083, required=True)
+	redirect_fail_url = CharField(max_length=2083, required=True)
 
-	class Meta:
-		model = Payment_Request
-		fields = "__all__"
 
 	def sanitazie_post_data(self):
 
 		self.invoice_ids_str = self.data.get('invoice_ids')
 		self.proforma_ids_str = self.data.get('proforma_ids')
-		self.redirect_ok_url = self.data.get('redirect_ok_url')
-		self.redirect_fail_url = self.data.get('redirect_fail_url')
+
+		try:
+			self.redirect_ok_url = self.data['redirect_ok_url']
+		except KeyError:
+			raise ValidationError('Please supply a redirect_ok_url'	)
+
+		try:
+			self.redirect_fail_url = self.data['redirect_fail_url']
+		except KeyError:
+			raise ValidationError('Please supply a redirect_fail_url'	)
+
+		self.redirect_fail_url = self.data['redirect_fail_url']
 
 		if self.invoice_ids_str in [None, ''] and self.proforma_ids_str in [None, '']:
 			raise ValidationError(
