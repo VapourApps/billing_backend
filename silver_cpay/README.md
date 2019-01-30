@@ -58,7 +58,7 @@ The app is not done as a proper fully functional Silver Payment processor.
 
 A tutorial for writing proper payment processors for silver is available here: https://www.presslabs.com/code/silver/guides/adding-a-new-payment-processor/
 
-The app as it is, has a dummy processor class in payment_processors.py. This class is added in `settings.py.` in `PAYMENT_PROCESSORS` variable. This config will allow you to select cpay as a payment processor in the admin, but it is not fully functional.
+The app, as it is, has a dummy processor class in payment_processors.py. This class is added in `settings.py.` in the `PAYMENT_PROCESSORS` variable. This config will allow you to select cpay as a payment processor in the admin, but it is not fully functional.
 
 A Payment processor is needed in order to create Payment Methods. Payment Methods are defined per Customer. The app is capable of creating payment methods for customers that don't have one. There is a settings varible that controls this: `CPAY_IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY`
 
