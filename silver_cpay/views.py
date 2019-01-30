@@ -77,7 +77,7 @@ def generate_cpay_parameters(request):
 			'status': status.HTTP_400_BAD_REQUEST
 		}
 
-	if cpay_settings.IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY:
+	if cpay_settings.CPAY_IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY:
 		customer = Customer.objects.get(id=customer_ids.pop())
 		try:
 			customer.paymentmethod_set.get(payment_processor='cpay')
@@ -110,8 +110,7 @@ def generate_cpay_parameters(request):
 		'PaymentFailURL': request.build_absolute_uri(reverse('cpay-payment-fail')),
 	}
 
-
-	cpay_obj = Cpay(password=cpay_settings.CPAY_PASSWORD, is_testing=False, **post_data)
+	cpay_obj = Cpay(password=cpay_settings.CPAY_PASSWORD, is_testing=cpay_settings.CPAY_IS_TESTING, **post_data)
 
 	payment_request.data = json.dumps(dict(cpay_obj.params))
 	payment_request.post_url = cpay_obj.url
@@ -139,7 +138,7 @@ class Cpay_View_Set(viewsets.ViewSet):
 		payment_request.status = status
 		payment_request.save()
 
-		cpay_obj = Cpay(password=cpay_settings.CPAY_PASSWORD, is_testing=False, **request.data)
+		cpay_obj = Cpay(password=cpay_settings.CPAY_PASSWORD, is_testing=cpay_settings.CPAY_IS_TESTING, **request.data)
 
 		data = {}
 		for key in request.data:
@@ -159,7 +158,7 @@ class Cpay_View_Set(viewsets.ViewSet):
 				total += int(document.total)
 				customer = document.customer
 
-			if cpay_settings.IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY:
+			if cpay_settings.CPAY_IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY:
 				payment_method = None
 				try:
 					payment_method = customer.paymentmethod_set.get(payment_processor='cpay')

@@ -54,9 +54,10 @@ class Cpay:
 
 		if is_testing:
 			self.password = 'TEST_PASS'
-			self.url = "https://www.cpay.com.mk/Client/page/default.aspx?xml_id=/mk-MK/.TestLoginToPay/"
-		else:
 			self.url = "https://80.77.147.45/client/Page/default.aspx?xml_id=/mk-MK/.loginToPay/.simple/"
+		else:
+			self.url = "https://www.cpay.com.mk/Client/page/default.aspx?xml_id=/mk-MK/.TestLoginToPay/"
+
 
 		self.generate_checksum()
 
