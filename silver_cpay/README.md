@@ -47,9 +47,9 @@ The app comes with two models:
 ### Settings
 
 The app settings defined in `app_settings.py`. The required parameters need to be defined in `va_settings.py`
-- `CPAY_MERCHANT_ID` - required
-- `CPAY_MERCHANT_NAME` - required
-- `CPAY_PASSWORD` - required
+- `CPAY_MERCHANT_ID` - required, supplied by Casys
+- `CPAY_MERCHANT_NAME` - required, supplied by Casys
+- `CPAY_PASSWORD` - required, supplied by Casys. In the testing env, the password is `'TEST_PASS'`
 - `CPAY_IS_TESTING` - optional, optional, `False` by default. Used to switch between cpay post production and test URLs. When set to `True` will force the `CPAY_PASSWORD` to be `'TEST_PASS'`
 - `CPAY_IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY` - optional, `False` by default. When set to true, will generate a `PaymentMethod` instance for every customer that tries to initiate a payment. Requires cpay do be added ad a payment processor in `settings.py`
 
