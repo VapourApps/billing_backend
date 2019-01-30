@@ -1,9 +1,13 @@
-<form method = 'POST' action='https://www.cpay.com.mk/client/Page/default.aspx?xml_id=/mk-MK/.loginToPay/.simple/'>
-	Submit will post to URL: https://www.cpay.com.mk/client/Page/default.aspx?xml_id=/mk-MK/.loginToPay/.simple/<br>
+<form method = 'POST' action='https://localhost:8443/client/Page/default.aspx?xml_id=/mk-MK/.loginToPay/.simple/'>
 	
-	<input type = 'hidden' name = 'PaymentOKURL' value='http://vodovod.eyetea.mk/static/cpay/ok.html' >
+
+	Submit will post to URL: https://localhost:8443/client/Page/default.aspx?xml_id=/mk-MK/.loginToPay/.simple/<br><br>
 	
-	<input type = 'hidden' name = 'PaymentFailURL' value='http://vodovod.eyetea.mk/static/cpay/fail.html' >
+
+	
+	<input type = 'hidden' name = 'PaymentOKURL' value='https://m-api.vodovod-skopje.com.mk/static/cpay/ok.html' >
+	
+	<input type = 'hidden' name = 'PaymentFailURL' value='https://m-api.vodovod-skopje.com.mk/static/cpay/fail.html' >
 	
 	<input type = 'hidden' name = 'AmountToPay' value='100' >
 	
@@ -47,8 +51,8 @@
 	
 	<input type = 'hidden' name = 'Email' value='' >
 	
-	<input type = 'hidden' name = 'CheckSum' value='2441131F74074228F10C3E3EB3D0E00E' >
-	<input type = 'hidden' name = 'CheckSumHeader' value='08PaymentOKURL,PaymentFailURL,AmountToPay,AmountCurrency,PayToMerchant,Details1,Details2,MerchantName,044046003003010011011034' >
+	<input type = 'hidden' name = 'CheckSum' value='35D64C44E0703BABDEA6C15A33BD7BF1' >
+	<input type = 'hidden' name = 'CheckSumHeader' value='08PaymentOKURL,PaymentFailURL,AmountToPay,AmountCurrency,PayToMerchant,Details1,Details2,MerchantName,055057003003010011011034' >
 
 	<button type='submit'>Submit</button>
 </form>

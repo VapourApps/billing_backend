@@ -139,3 +139,4 @@ silver_extensions/migrations/
 va_billing_venv
 va_purchase_project/va_settings.py
 custom_apps/*/
+*.db

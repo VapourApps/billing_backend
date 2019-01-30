@@ -31,10 +31,10 @@ import requests, json
 from silver.models import Customer, Invoice
 from silver_extensions.models import UserCustomerMapping
 
-def obtain_jwt_token(response):
+def obtain_jwt_token(request):
     print ('In my view')
-    print ('Rseponse : ', response.POST)
-    return JWT.obtain_jwt_token(response)
+    print ('Rseponse : ', request.body)
+    return JWT.obtain_jwt_token(request)
 
 def check_activation_token(uidb64, token):
     try:
