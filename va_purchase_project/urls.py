@@ -26,7 +26,8 @@ urlpatterns = [
     url(r'^silver/', include('silver.urls')),
     url(r'^va_saas/', include('va_saas.urls')),
     url(r'^va_silver/', include('silver_extensions.urls')),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    url(r'^va_silver/cpay/', include('silver_cpay.urls')),
 
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += custom_urlpatterns

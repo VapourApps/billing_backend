@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'va_saas',
     'silver_extensions',
+    'silver_cpay'
 ]
 
 INSTALLED_APPS += get_custom_apps()
@@ -229,6 +230,9 @@ PAYMENT_PROCESSORS = {
     'braintree_recurring': {
         'class': 'silver_braintree.payment_processors.BraintreeTriggeredRecurring',
         'setup_data': braintree_setup_data,
+    },
+    'cpay': {
+        'class': 'silver_cpay.payment_processors.CpayTriggered',
     }
 }
 

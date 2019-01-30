@@ -1,0 +1,14 @@
+<div>Select invoices and proformas form - Write your custom HTML here</div>
+<br>
+
+<form method='post' action='{{pay_confirm_url}}'>
+
+	Invoice IDs: <input type='text' name='invoice_ids'><br><br>
+	Proforma IDs: <input type='text' name='proforma_ids'><br><br>
+
+	Redirect Success URL: <input type='text' name='redirect_ok_url' value="{{redirect_ok_url}}" style='width:400px'><br><br>
+	Redirect Fail URL: <input type='text' name='redirect_fail_url' value="{{redirect_fail_url}}" style='width:400px'><br><br>
+
+	Transaction Description: <input type='text' name='transaction_details' value="Vodovod Skopje - Web Payment" style='width:400px'><br><br>
+	<button type='submit'>Submit</button>
+</form>
