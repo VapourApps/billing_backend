@@ -34,5 +34,6 @@ except AttributeError:
 # can not handle multiple currencies.
 # to do: currency conversion to MKD
 
+CPAY_IS_TESTING = getattr(settings, 'CPAY_IS_TESTING', False)
 
-IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY = getattr(settings, 'IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY', False)
+CPAY_IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY = getattr(settings, 'IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY', False)
