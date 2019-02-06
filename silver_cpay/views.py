@@ -23,14 +23,29 @@ from silver_cpay.models import Payment_Request, Notification
 from silver_cpay.serializers import Payment_Request_Validation_Serializer, Payment_Request_Serializer, Notification_Serializer
 
 
-def generate_cpay_parameters(request):
+def generate_default_serializer_data(request):
+        serializer_data = {}
+        serializer_data['redirect_ok_url'] = request.POST.get('redirect_ok_url', request.build_absolute_uri(reverse('pay-ok')))
+        serializer_data['redirect_fail_url'] = request.POST.get('redirect_fail_url', request.build_absolute_uri(reverse('pay-fail')))
+        serializer_data['invoice_ids'] = request.POST.get('invoice_ids', extra_context['invoice'].series)
 
-	serializer = Payment_Request_Validation_Serializer(data=request.POST)
+        return serializer_data
+
+def generate_cpay_parameters(request, extra_context = {}):
+        # NOTE: This is kind of a temporary fix to go along the temporary fix in silver_extensions.views.py
+        # That view was originally supposed to work with a POST request, but we wanted to extend it to work from a mobile app
+        # That app uses flutter which evidently doesn't support making POST requests and wrapping them
+        # So hopefully one day this won't exist, but in the meantime, it works by adding some data to an empty POST dict and creates the serializer with said default data. 
+
+        serializer_data = request.POST or generate_default_data
+	serializer = Payment_Request_Validation_Serializer(data=serializer_data)
 	serializer.is_valid()
+        
+#        serializer.payrequest.build_absolute_uri(reverse('pay-confirm')),
 	serializer.sanitazie_post_data()
 
-	invoices = Invoice.objects.filter(id__in=serializer.invoice_ids)
-	proformas = Proforma.objects.filter(id__in=serializer.proforma_ids)
+	invoices = Invoice.objects.filter(series__in=serializer.invoice_ids)
+	proformas = Proforma.objects.filter(series__in=serializer.proforma_ids)
 
 	if len(invoices) == 0 and len(proformas) == 0:
 		return {
@@ -176,7 +191,8 @@ class Cpay_View_Set(viewsets.ViewSet):
 			# this is highly unlikely, but just in case
 			if int(total * 100) == int(request.data.get('AmountToPay')):
 				for invoice in invoices:
-					invoice.pay()
+                                    if invoice.state != 'paid':
+                                                invoice.pay()
 				for proforma in proformas:
 					proforma.pay()
 
@@ -232,10 +248,12 @@ def generate_cpay_form(request, extra_context={}):
 	error = None
 
 	try:
-		response = generate_cpay_parameters(request)
+		response = generate_cpay_parameters(request, extra_context)
 		data = response.get('data', {})
 		error = response.get('error')
 	except ValidationError as e:
+                import traceback
+                traceback.print_exc()
 		error = e
 
 	context = {

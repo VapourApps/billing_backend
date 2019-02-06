@@ -32,8 +32,6 @@ from silver.models import Customer, Invoice
 from silver_extensions.models import UserCustomerMapping
 
 def obtain_jwt_token(request):
-    print ('In my view')
-    print ('Rseponse : ', request.body)
     return JWT.obtain_jwt_token(request)
 
 def check_activation_token(uidb64, token):
@@ -47,13 +45,10 @@ def check_activation_token(uidb64, token):
     return False
 
 @permission_classes((AllowAny, ))
-@api_view(['GET'])
 def activate(request, uidb64, token):
     uid = check_activation_token(uidb64, token)
-    print ('UID is : ', uid)
     if uid:
         user = User.objects.get(pk=uid)
-        print ('User is :', user)
         user.is_active = True
         user.save()
         login(request, user)
@@ -138,13 +133,10 @@ def map_customer_user(request):
 @api_view(['POST'])
 def change_user_password(request):
     data = request.data
-    print("DATA")
-    print(data)
     if not all([x in data.keys() for x in ['username', 'old_password', 'new_password']]):
         return Response('Requires 3 POST arguments : username, old_password and new_password. ', status = 400)
 
     user = authenticate(username = data['username'], password = data['old_password'])
-    print(user)
     if not user: 
         return Response('Could not authenticate user with supplied credentials. ', status = 401)
     user.set_password(data['new_password'])

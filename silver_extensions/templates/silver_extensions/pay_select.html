@@ -1,14 +1,70 @@
-<div>Select invoices and proformas form - Write your custom HTML here</div>
-<br>
+{% load static %}
+<html>
+	<head>
 
-<form method='post' action='{{pay_confirm_url}}'>
+		<link rel="stylesheet" type="text/css" href="{% static "meter_app/bootstrap.min.css" %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static "meter_app/demo.css" %}"/>
+	</head>
+<body>
+<!--<div>Select invoices and proformas form - Write your custom HTML here</div>
+<br>-->
 
-	Invoice IDs: <input type='text' name='invoice_ids'><br><br>
-	Proforma IDs: <input type='text' name='proforma_ids'><br><br>
+<form method='post' action=''>
+	<div id="pnlPrv">
+				
+				<div class="container">
+					<div class="main-content mag-content clearfix">
+						<div class="col-md-8">
+							<article class="news-block big-block">
+								<h3 class="block-title"><span>Инстант плаќање</span></h3>
+								<div class="row">
+									<div class="col-md-12">
+										<header class="news-details" style="padding-left: 18px;">
+											<p>
+												*ЈП Водовод и Канализација - Скопје ќе обезбеди заштита на личните податоци на субјектите на податоци, согласно со законската и подзаконската регулатива за заштита на личните податоци и ќе превземе соодветни административни, технички и организациски мерки за заштита на личните податоци.
+												<br>
+												<b>Доколку ви е потребно дополнително објаснување јавете се на бројот: 02 3073 010, во работно време од 7.30 до 15.30 часот.  </b>
+											</p>
+										</header>
+										<header class="news-details" style="padding-left: 18px;">
+											<div class="form-inline">
+												<div class="form-group">
+													<label class="sr-only">Фолио/Фактура број*</label>
+													<p class="form-control-static"><b>Фолио/Фактура број*</b> </p>
+												</div>
+												<div class="form-group" style="width: 37%">
+													<input name="invoice_ids" type="text" id="txtFolio" class="form-control">
+												</div>
+											</div>
+											<br>
+											<div class="form-group">
+												<input type="submit" name="btnProdolzi" value="Продолжи" id="btnProdolzi" class="btn btn-default" style="padding: 1% 2%; margin-bottom: 20px;" onclick="redirect_index2();">&nbsp;&nbsp;
+												<b><span id="lblPoraka" style="color:Red;">
+													{% if error %}
+                                						{{ error }}
+                            						{% endif %}
+                            					</span></b>
+											</div>
+										</header>
+									</div>
+								</div>
+							</article>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+	<!-- Invoice IDs: <input type='text' name='invoice_ids'><br><br> -->
+	<!-- Proforma IDs: <input type='text' name='proforma_ids'><br><br>!-->
 
-	Redirect Success URL: <input type='text' name='redirect_ok_url' value="{{redirect_ok_url}}" style='width:400px'><br><br>
-	Redirect Fail URL: <input type='text' name='redirect_fail_url' value="{{redirect_fail_url}}" style='width:400px'><br><br>
+	<!--Redirect Success URL:--> 
+	<input type='hidden' name='redirect_ok_url' value="{{redirect_ok_url}}" style='width:400px'><br><br>
+	<!-- Redirect Fail URL: --> 
+	<input type='hidden' name='redirect_fail_url' value="{{redirect_fail_url}}" style='width:400px'><br><br>
 
-	Transaction Description: <input type='text' name='transaction_details' value="Vodovod Skopje - Web Payment" style='width:400px'><br><br>
-	<button type='submit'>Submit</button>
+	<!--Transaction Description: -->
+	<input type='hidden' name='transaction_details' value="Vodovod Skopje - Web Payment" style='width:400px'><br><br>
+	<!--<button type='submit'>Submit</button>-->
 </form>
+</body>
+</html>

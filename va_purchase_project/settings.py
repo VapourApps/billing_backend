@@ -157,7 +157,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', 
         'NAME': 'vodovod',
         'USER': 'vodovod-user',
-        'PASSWORD': 'vodovod-pass',
+        'PASSWORD': 'Icheishai0',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
@@ -258,10 +258,13 @@ SERVER_EMAIL = SERVER_EMAIL or None
 
 # Media settings, for uploading images. 
 
-MEDIA_ROOT = '/var/www/billing_backend/va_purchase_project/media'
+MEDIA_ROOT = '/var/www/billing_backend_vodovod/va_purchase_project/media'
 MEDIA_URL = '/media/'
 
 # VA stuff
 
 from va_settings import *
 
+
+#CPAY stuff
+from cpay_settings import CPAY_MERCHANT_ID, CPAY_MERCHANT_NAME, CPAY_PASSWORD

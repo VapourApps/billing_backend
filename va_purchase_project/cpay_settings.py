@@ -1,0 +1,3 @@
+CPAY_MERCHANT_ID = '1000000060'
+CPAY_MERCHANT_NAME = 'J.P. Vodovod i kanalizacija-Skopje'
+CPAY_PASSWORD = 'TEST_PASS'
