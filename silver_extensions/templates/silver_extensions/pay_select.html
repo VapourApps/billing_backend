@@ -4,12 +4,32 @@
 
 		<link rel="stylesheet" type="text/css" href="{% static "meter_app/bootstrap.min.css" %}"/>
 		<link rel="stylesheet" type="text/css" href="{% static "meter_app/demo.css" %}"/>
+		<script type="text/javascript">
+			var startTyping=false;
+			function scrollToContext(){
+					startTyping!=startTyping;
+					var element=document.getElementById("btnProdolzi");
+					window.scroll(0,findPos(element));
+			}
+
+						//Finds y value of given object
+			function findPos(obj) {
+			    var curtop = 0;
+			    if (obj.offsetParent) {
+			        do {
+			            curtop += obj.offsetTop;
+			        } while (obj = obj.offsetParent);
+			    return [curtop];
+			    }
+			}
+		</script>
 	</head>
 <body>
 <!--<div>Select invoices and proformas form - Write your custom HTML here</div>
 <br>-->
 
 <form method='post' action=''>
+	<br/><br/><br/>
 	<div id="pnlPrv">
 				
 				<div class="container">
@@ -33,7 +53,7 @@
 													<p class="form-control-static"><b>Фолио/Фактура број*</b> </p>
 												</div>
 												<div class="form-group" style="width: 37%">
-													<input name="invoice_ids" type="text" id="txtFolio" class="form-control">
+													<input name="invoice_ids" type="number" id="txtFolio" class="form-control" onkeydown="scrollToContext()">
 												</div>
 											</div>
 											<br>
@@ -66,5 +86,6 @@
 	<input type='hidden' name='transaction_details' value="Vodovod Skopje - Web Payment" style='width:400px'><br><br>
 	<!--<button type='submit'>Submit</button>-->
 </form>
+<br/><br/><br/><br/>
 </body>
 </html>

@@ -78,7 +78,7 @@ INSTALLED_APPS = [
 INSTALLED_APPS += get_custom_apps()
 
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days = 365),
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
     'JWT_ALLOW_REFRESH': True,
 #    'JWT_AUTH_HEADER_PREFIX': 'Token'
@@ -245,9 +245,9 @@ TRANSACTION_SAVE_TIME_LIMIT = 5
 
 # Email settings - for account confirmation
 
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
+EMAIL_PORT= 587
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = False
 from creds import EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL, SERVER_EMAIL
 
 EMAIL_HOST = EMAIL_HOST or None
@@ -264,7 +264,22 @@ MEDIA_URL = '/media/'
 # VA stuff
 
 from va_settings import *
-
-
+SILVER_PAYMENT_TOKEN_EXPIRATION = datetime.timedelta(days = 5)
+PAYMENT_METHOD_SECRET = "SECRET METHOD" 
 #CPAY stuff
 from cpay_settings import CPAY_MERCHANT_ID, CPAY_MERCHANT_NAME, CPAY_PASSWORD
+
+
+#VODOVOD settings
+#VA_VODOVOD_DEFECT_EMAIL = 'mapp@vodovod-skopje.com.mk'
+
+VA_VODOVOD_DEFECT_EMAIL = 'm.nacev@yahoo.com'
+VA_VODOVOD_STATUS_EMAIL = 'm.nacev@yahoo.com'
+VA_VODOVOD_UPDATE_CUSTOMER_EMAIL='m.nacev@yahoo.com'
+
+#VA_VODOVOD_STATUS_EMAIL = 'sostojbavodomer@vodovod-skopje.com.mk'
+#VA_VODOVOD_DEFECT_EMAIL = 'prijavidefekt@vodovod-skopje.com.mk'
+#VA_VODOVOD_UPDATE_CUSTOMER_EMAIL = 'korisnikprofil@vodovod-skopje.com.mk'
+VA_VODOVOD_USER_EMAIL = 'korisnikprofil@vodovod-skopje.com.mk'
+VA_VODOVOD_FAKTURA_EMAIL = 'e-faktura@vodovod-skopje.com.mk'
+VA_VODOVOD_CONTACT_EMAIL = 'kontakt@vodovod-skopje.com.mk'

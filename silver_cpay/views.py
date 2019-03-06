@@ -23,7 +23,7 @@ from silver_cpay.models import Payment_Request, Notification
 from silver_cpay.serializers import Payment_Request_Validation_Serializer, Payment_Request_Serializer, Notification_Serializer
 
 
-def generate_default_serializer_data(request):
+def generate_default_serializer_data(request, extra_context):
         serializer_data = {}
         serializer_data['redirect_ok_url'] = request.POST.get('redirect_ok_url', request.build_absolute_uri(reverse('pay-ok')))
         serializer_data['redirect_fail_url'] = request.POST.get('redirect_fail_url', request.build_absolute_uri(reverse('pay-fail')))
@@ -37,7 +37,7 @@ def generate_cpay_parameters(request, extra_context = {}):
         # That app uses flutter which evidently doesn't support making POST requests and wrapping them
         # So hopefully one day this won't exist, but in the meantime, it works by adding some data to an empty POST dict and creates the serializer with said default data. 
 
-        serializer_data = request.POST or generate_default_data
+        serializer_data = request.POST or generate_default_serializer_data(request, extra_context)
 	serializer = Payment_Request_Validation_Serializer(data=serializer_data)
 	serializer.is_valid()
         

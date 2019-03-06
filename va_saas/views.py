@@ -85,8 +85,10 @@ def forgot_pass(request):
                 mail_subject, message, to=[to_email]
     )
     email.send()
+    data={"email": user_email, "password": random_pass}
+    return HttpResponse(json.dumps(data))
 
-    return Response('Sent mail to ' + str(user_email))
+    #return Response('Sent mail to ' + str(user_email))
 
 
 @api_view(['GET'])
