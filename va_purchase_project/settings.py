@@ -269,17 +269,5 @@ PAYMENT_METHOD_SECRET = "SECRET METHOD"
 #CPAY stuff
 from cpay_settings import CPAY_MERCHANT_ID, CPAY_MERCHANT_NAME, CPAY_PASSWORD
 
+from custom_apps.settings import *
 
-#VODOVOD settings
-#VA_VODOVOD_DEFECT_EMAIL = 'mapp@vodovod-skopje.com.mk'
-
-VA_VODOVOD_DEFECT_EMAIL = 'm.nacev@yahoo.com'
-VA_VODOVOD_STATUS_EMAIL = 'm.nacev@yahoo.com'
-VA_VODOVOD_UPDATE_CUSTOMER_EMAIL='m.nacev@yahoo.com'
-
-#VA_VODOVOD_STATUS_EMAIL = 'sostojbavodomer@vodovod-skopje.com.mk'
-#VA_VODOVOD_DEFECT_EMAIL = 'prijavidefekt@vodovod-skopje.com.mk'
-#VA_VODOVOD_UPDATE_CUSTOMER_EMAIL = 'korisnikprofil@vodovod-skopje.com.mk'
-VA_VODOVOD_USER_EMAIL = 'korisnikprofil@vodovod-skopje.com.mk'
-VA_VODOVOD_FAKTURA_EMAIL = 'e-faktura@vodovod-skopje.com.mk'
-VA_VODOVOD_CONTACT_EMAIL = 'kontakt@vodovod-skopje.com.mk'
