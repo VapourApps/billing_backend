@@ -28,10 +28,7 @@ def get_plans(request):
     ignore_fields = ['metered_features']
 
     for plan in plans: 
-        print ('Plan is : ', model_to_dict(plan))
-        print ('Id is : ', plan.id)
         plan_features = se.PlanFeatures.objects.filter(plan_id = plan.id).all()
-        print ('Looked for features with ', plan.id)
         plan_result = model_to_dict(plan) 
 
         if plan_features:
@@ -50,8 +47,6 @@ def get_plans(request):
         plan_result = {x : plan_result[x] for x in plan_result if x not in ignore_fields}    
         result.append(plan_result)
 
-    print (result)
-
     result = {'success' : True, 'data' : result, 'message' : ''}
     return JsonResponse(result)
 
@@ -61,7 +56,6 @@ def get_customers(request):
     user_relationship = se.UserCustomerMapping.objects.filter(user_id = request.user.id).all()
 
     customers = [model_to_dict(x.customer) for x in user_relationship]
-    print ('customers', customers)
     result = {'sucess' : True, 'data' : customers, 'message' : ''}
     return JsonResponse(result)
 
@@ -103,7 +97,6 @@ def get_subscriptions(request):
         'currency' : subscription.plan.currency,
     } for customer in customers for subscription in customer.subscriptions.all()]
 
-    print ('ALl is', subscriptions)
     result = {'success' : True, 'data' : subscriptions, 'message' : ''}
 
     return JsonResponse(result)

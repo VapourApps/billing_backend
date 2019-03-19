@@ -33,8 +33,6 @@ from silver_extensions.models import UserCustomerMapping
 
 
 def obtain_jwt_token(response):
-    print ('In my view')
-    print ('Rseponse : ', response.POST)
     return JWT.obtain_jwt_token(response)
 
 def check_activation_token(uidb64, token):
@@ -51,16 +49,13 @@ def check_activation_token(uidb64, token):
 @api_view(['GET'])
 def activate(request, uidb64, token):
     uid = check_activation_token(uidb64, token)
-    print ('UID is : ', uid)
     if uid:
         user = User.objects.get(pk=uid)
-        print ('User is :', user)
         user.is_active = True
         user.save()
         login(request, user)
         return redirect('https://billing.vapour-apps.com/')
     else:
-        print ('Invalid!')
         return Response('Activation link is invalid!', status = 400)
 
 @api_view(['POST'])
