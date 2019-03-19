@@ -12,14 +12,19 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import datetime
 import os, braintree
 
+from creds import SECRET_KEY
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = SECRET_KEY or ''
+
 try:
     import braintree_id
     import creds
 except: 
     raise Exception("To use this django app, you must have a creds.py and braintree_id.py file with certain data. braintree_id needs the BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY and BRAINTREE_PRIVATE_KEY variables, and creds needs SECRET_KEY (which holds the django secret key) as well as EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL and SERVER_EMAIL variables. These are excluded from the repo for security reasons. ")
 
+from custom_apps.apps import get_custom_apps
 from braintree_id import BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY, BRAINTREE_PRIVATE_KEY
-from creds import SECRET_KEY
 
 BRAINTREE_MERCHANT_ID = BRAINTREE_MERCHANT_ID or None
 BRAINTREE_PUBLIC_KEY = BRAINTREE_PUBLIC_KEY or None
@@ -33,8 +38,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRET_KEY or ''
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -69,10 +73,13 @@ INSTALLED_APPS = [
     'va_saas',
     'silver_extensions',
     'rest_hooks', 
+    'silver_cpay'
 ]
 
+INSTALLED_APPS += get_custom_apps()
+
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days = 365),
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
     'JWT_ALLOW_REFRESH': True,
 #    'JWT_AUTH_HEADER_PREFIX': 'Token'
@@ -139,9 +146,21 @@ WSGI_APPLICATION = 'va_purchase_project.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
+    'sqlite': {
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '/var/www/billing_backend_vodovod/db.sqlite3',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+},
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'vodovod',
+        'USER': 'vodovod-user',
+        'PASSWORD': 'Icheishai0',
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
     }
 }
 
@@ -183,7 +202,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/va_billing_api/va_purchase_project/static'
+#STATICFILES_DIRS = [
+#    '/var/www/billing_backend_vodovod/custom_apps/meter_app/',
+#]
+STATIC_ROOT = '/var/www/billing_backend_vodovod/static'
 
 
 #userprofiles settings
@@ -209,6 +231,9 @@ PAYMENT_PROCESSORS = {
     'braintree_recurring': {
         'class': 'silver_braintree.payment_processors.BraintreeTriggeredRecurring',
         'setup_data': braintree_setup_data,
+    },
+    'cpay': {
+        'class': 'silver_cpay.payment_processors.CpayTriggered',
     }
 }
 
@@ -221,9 +246,9 @@ TRANSACTION_SAVE_TIME_LIMIT = 5
 
 # Email settings - for account confirmation
 
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
+EMAIL_PORT= 587
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = False
 from creds import EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL, SERVER_EMAIL
 
 EMAIL_HOST = EMAIL_HOST or None
@@ -250,4 +275,14 @@ HOOK_DELIVERER = 'va_saas.webhooks.rest_hook_handler'
 # VA stuff
 
 from va_settings import *
+SILVER_PAYMENT_TOKEN_EXPIRATION = datetime.timedelta(days = 5)
+PAYMENT_METHOD_SECRET = "SECRET METHOD" 
+#CPAY stuff
+from cpay_settings import CPAY_MERCHANT_ID, CPAY_MERCHANT_NAME, CPAY_PASSWORD
+
+try:
+    print ('Importing settings. ')
+    from custom_apps.settings import *
+except ImportError: 
+    print ('No custom apps settings. ')
 

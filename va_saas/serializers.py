@@ -43,17 +43,23 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         instance.save()
         
         mail_subject = 'Activate your ~VA~ account.'
+        instance_uid = urlsafe_base64_encode(force_bytes(instance.pk))
+        instance_token = account_activation_token.make_token(instance)
         message = render_to_string('signup.html', {
             'user': instance,
             'domain': settings.VA_DOMAIN,
-            'uid':urlsafe_base64_encode(force_bytes(instance.pk)),
-            'token':account_activation_token.make_token(instance),
+            'uid': instance_uid,
+            'token': instance_token,
         })
+        print ('Sending ', message)
+        print ('UID is ', instance_uid)
+        print ('Token is ', instance_token)
         to_email = validated_data.get('email')
         email = EmailMessage(
                     mail_subject, message, to=[to_email]
         )
         email.send()
+        print ('Sent!')
         return instance
 
     class Meta:

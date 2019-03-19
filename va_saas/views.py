@@ -31,9 +31,8 @@ import requests, json
 from silver.models import Customer, Invoice
 from silver_extensions.models import UserCustomerMapping
 
-
-def obtain_jwt_token(response):
-    return JWT.obtain_jwt_token(response)
+def obtain_jwt_token(request):
+    return JWT.obtain_jwt_token(request)
 
 def check_activation_token(uidb64, token):
     try:
@@ -46,7 +45,6 @@ def check_activation_token(uidb64, token):
     return False
 
 @permission_classes((AllowAny, ))
-@api_view(['GET'])
 def activate(request, uidb64, token):
     uid = check_activation_token(uidb64, token)
     if uid:
@@ -86,8 +84,10 @@ def forgot_pass(request):
                 mail_subject, message, to=[to_email]
     )
     email.send()
+    data={"email": user_email, "password": random_pass}
+    return HttpResponse(json.dumps(data))
 
-    return Response('Sent mail to ' + str(user_email))
+    #return Response('Sent mail to ' + str(user_email))
 
 
 @api_view(['GET'])
@@ -142,7 +142,7 @@ def change_user_password(request):
         return Response('Could not authenticate user with supplied credentials. ', status = 401)
     user.set_password(data['new_password'])
     user.save()
-    return Response('Success!')
+    return Response('Success!');
 
 class UserList(APIView):
     """
@@ -200,18 +200,17 @@ def get_invoices(request):
 
     user_relationship = UserCustomerMapping.objects.filter(user_id = request.user.id).all()
     customers = [x.customer for x in user_relationship]
-    invoices = []
+    invoices_result = []
     for customer in customers: 
 
-        invoice = Invoice.objects.filter(customer = customer).all()
-        if invoice:
-            invoice = invoice[0]
+        invoices = Invoice.objects.filter(customer = customer).all()
+        for invoice in invoices:
             invoice = {
-                x : str(getattr(invoice, x)) for x in ["kind", "related_document", "series", "number", "customer", "provider", "archived_customer", "archived_provider", "due_date", "issue_date", "paid_date", "cancel_date", "sales_tax_percent", "sales_tax_name", "currency", "transaction_currency", "transaction_xe_rate", "transaction_xe_date", "pdf", "state"]
+                x : str(getattr(invoice, x)) for x in ["kind", "related_document", "series", "number", "customer", "provider", "archived_customer", "archived_provider", "due_date", "issue_date", "paid_date", "cancel_date", "sales_tax_percent", "sales_tax_name", "currency", "transaction_currency", "transaction_xe_rate", "transaction_xe_date", "pdf", "state", "total"]
             }
-            invoices.append(invoice)
+            invoices_result.append(invoice)
 
-    data = {"success" : True, "message" : "", "data" : invoices}
+    data = {"success" : True, "message" : "", "data" : invoices_result}
     return HttpResponse(json.dumps(data))
    
 def get_plans(request):

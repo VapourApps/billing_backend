@@ -1,0 +1,69 @@
+{% load static %}
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="{% static "meter_app/bootstrap.min.css" %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static "meter_app/demo.css" %}"/>
+	</head>
+	<body>
+		<!-- <div>Overridden Pay Confirm Page</div>
+		<div>Custom Vars:</div>
+		<div>Var1: {{custom_template_var_1}}</div>
+		<div>Var2: {{custom_template_var_2}}</div>-->
+		<div class="container">
+			<div class="main-content mag-content clearfix">
+				<div class="col-md-8">
+					<article class="news-block big-block">
+						<h3 class="block-title"><span>Инстант Плаќање</span></h3>
+						<div class="row">
+							<div class="col-md-12">
+								<header class="news-details" style="padding-left: 18px;">
+									<p>
+										*ЈП Водовод и канализација - Скопје ќе обезбеди заштита на личните податоци на субјектите на податоци, согласно со законската и подзаконската регулатива за заштита на личните податоци и ќе превземе соодветни административни, технички и организациски мерки за заштита на личните податоци.
+										<br>
+										<b>Доколку ви е потребно дополнително објаснување јавете се на бројот: 02 3073 010, во работно време од 7.30 до 15.30 часот.  </b>
+									</p>
+								</header>
+								<header class="news-details" style="padding-left: 18px;">
+									<form class='cpay-params-form' method = 'POST' action='{{url}}'>
+										<div class="form-inline col-md-12">
+											<div class="form-group col-md-4">
+												<p class="form-control-static"><b>Фолио/Фактура број*</b> </p>
+											</div>
+											<div class="form-group col-md-4">
+												<input name="txtFolioConfirmed" type="text" value={{ invoice.series }} id="txtFolioConfirmed" disabled="disabled" class="aspNetDisabled form-control">
+											</div>
+											
+										</div>
+										<div class="form-inline col-md-12">
+											<div class="form-group col-md-4">
+												<p class="form-control-static"><b>Износ за плаќање*</b> </p>
+											</div>
+											<div class="form-group col-md-4">
+												<input name="txtPriceForFolio" type="text" value={{invoice.total}}
+												id="txtPriceForFolio" disabled="disabled" class="aspNetDisabled form-control">
+											</div>
+											
+										</div>
+										
+										<br/>
+										<div class="form-group">
+											<input type="submit" name="btnPlati" value="Плати"
+											class="btn btn-default" style="padding: 1% 2%; margin-bottom: 20px;">&nbsp;&nbsp;
+											</input>
+											<!--<input type="submit" name="btnOtkazi2" value="Откажи" id="btnOtkazi2" class="btn btn-default" style="padding: 1% 2%; margin-bottom: 20px; background-color: #b5b5b5 !important; border-color: #b5b5b5 !important; margin-left: 10px;" />-->
+											{% for name,value in params.items %}
+												<input type = 'hidden' name = '{{name}}' value='{{value}}' >
+											{% endfor %}
+										</form>
+									</div>
+								</header>
+							</div>
+						</div>
+					</article>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+
