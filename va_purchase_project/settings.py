@@ -269,5 +269,9 @@ PAYMENT_METHOD_SECRET = "SECRET METHOD"
 #CPAY stuff
 from cpay_settings import CPAY_MERCHANT_ID, CPAY_MERCHANT_NAME, CPAY_PASSWORD
 
-from custom_apps.settings import *
+try:
+    print ('Importing settings. ')
+    from custom_apps.settings import *
+except ImportError: 
+    print ('No custom apps settings. ')
 
