@@ -11,17 +11,13 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 import datetime
 import os, braintree
-
-from creds import SECRET_KEY
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRET_KEY or ''
-
 try:
     import braintree_id
-    import creds
-except: 
-    raise Exception("To use this django app, you must have a creds.py and braintree_id.py file with certain data. braintree_id needs the BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY and BRAINTREE_PRIVATE_KEY variables, and creds needs SECRET_KEY (which holds the django secret key) as well as EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL and SERVER_EMAIL variables. These are excluded from the repo for security reasons. ")
+    from va_settings import VA_DOMAIN, BILLING_FRONTEND, SECRET_KEY 
+
+except:
+    #TODO proper message
+    raise Exception("To use this django app, you must have a va_settings.py and braintree_id.py file with certain data. braintree_id needs the BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY and BRAINTREE_PRIVATE_KEY variables, and va_settings needs SECRET_KEY (which holds the django secret key), BILLING_FRONTEND (which holds the address of the frontend, for redirect purposes)  as well as VA_DOMAIN (for sending e-mail. These are excluded from the repo for security reasons. ")
 
 from custom_apps.apps import get_custom_apps
 from braintree_id import BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY, BRAINTREE_PRIVATE_KEY
@@ -246,11 +242,15 @@ TRANSACTION_SAVE_TIME_LIMIT = 5
 
 # Email settings - for account confirmation
 
-EMAIL_PORT= 587
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = False
-from creds import EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL, SERVER_EMAIL
+try:
+    from email_settings import EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL, SERVER_EMAIL, EMAIL_USE_TLS, EMAIL_USE_SSL, EMAIL_PORT
+except: 
+    #TODO print message
+    raise
 
+EMAIL_USE_TLS = EMAIL_USE_TLS or None
+EMAIL_USE_SSL = EMAIL_USE_SSL or None
+EMAIL_PORT = EMAIL_PORT or None
 EMAIL_HOST = EMAIL_HOST or None
 EMAIL_HOST_USER = EMAIL_HOST_USER or None
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD or None
@@ -272,9 +272,6 @@ HOOK_EVENTS = {
 HOOK_DELIVERER = 'va_saas.webhooks.rest_hook_handler'
 #HOOK_FINDER = 'va_saas.webhooks'
 
-# VA stuff
-
-from va_settings import *
 SILVER_PAYMENT_TOKEN_EXPIRATION = datetime.timedelta(days = 5)
 PAYMENT_METHOD_SECRET = "SECRET METHOD" 
 #CPAY stuff

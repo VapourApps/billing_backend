@@ -132,12 +132,12 @@ dmypy.json
 # VA custom ignores
 
 # Creds and other files used in settings.py
-va_purchase_project/creds.py
-va_purchase_project/braintree_id.py
-va_saas/migrations/
 silver_extensions/migrations/
 va_billing_venv
-va_purchase_project/va_settings.py
 custom_apps/*/
 custom_apps/settings.py
+va_purchase_project/braintree_id.py
+va_purchase_project/va_settings.py
+va_purchase_project/billing_settings.py
+va_purchase_project/email_settings.py
 *.db

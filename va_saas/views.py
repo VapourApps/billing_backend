@@ -30,6 +30,7 @@ import requests, json
 
 from silver.models import Customer, Invoice
 from silver_extensions.models import UserCustomerMapping
+from va_purchase_project.va_settings import BILLING_FRONTEND
 
 def obtain_jwt_token(request):
     return JWT.obtain_jwt_token(request)
@@ -52,7 +53,7 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        return redirect('https://billing.vapour-apps.com/')
+        return redirect(BILLING_FRONTEND)
     else:
         return Response('Activation link is invalid!', status = 400)
 
