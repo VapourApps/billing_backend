@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from silver.models import Plan
-from webhooks import VAHook
+from .webhooks import VAHook
 
 class CompanyPage(models.Model):
     company_name = models.CharField(max_length = 100)

@@ -140,4 +140,5 @@ va_purchase_project/braintree_id.py
 va_purchase_project/va_settings.py
 va_purchase_project/billing_settings.py
 va_purchase_project/email_settings.py
+va_purchase_project/db_settings.py
 *.db

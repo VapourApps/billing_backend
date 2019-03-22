@@ -12,15 +12,15 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import datetime
 import os, braintree
 try:
-    import braintree_id
-    from va_settings import VA_DOMAIN, BILLING_FRONTEND, SECRET_KEY 
+    from . import braintree_id
+    from .va_settings import VA_DOMAIN, BILLING_FRONTEND, SECRET_KEY 
 
 except:
     #TODO proper message
     raise Exception("To use this django app, you must have a va_settings.py and braintree_id.py file with certain data. braintree_id needs the BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY and BRAINTREE_PRIVATE_KEY variables, and va_settings needs SECRET_KEY (which holds the django secret key), BILLING_FRONTEND (which holds the address of the frontend, for redirect purposes)  as well as VA_DOMAIN (for sending e-mail. These are excluded from the repo for security reasons. ")
 
 from custom_apps.apps import get_custom_apps
-from braintree_id import BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY, BRAINTREE_PRIVATE_KEY
+from .braintree_id import BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY, BRAINTREE_PRIVATE_KEY
 
 BRAINTREE_MERCHANT_ID = BRAINTREE_MERCHANT_ID or None
 BRAINTREE_PUBLIC_KEY = BRAINTREE_PUBLIC_KEY or None
@@ -141,24 +141,14 @@ WSGI_APPLICATION = 'va_purchase_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'sqlite': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/var/www/billing_backend_vodovod/db.sqlite3',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-},
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'vodovod',
-        'USER': 'vodovod-user',
-        'PASSWORD': 'Icheishai0',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
-    }
-}
+try:
+    from .db_settings import DATABASES 
+
+except:
+    #TODO proper message
+    raise Exception("To use this django app, you must have a db_settings file with certain data.")
+
+DATABASES = DATABASES or None
 
 
 # Password validation
@@ -243,7 +233,7 @@ TRANSACTION_SAVE_TIME_LIMIT = 5
 # Email settings - for account confirmation
 
 try:
-    from email_settings import EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL, SERVER_EMAIL, EMAIL_USE_TLS, EMAIL_USE_SSL, EMAIL_PORT
+    from .email_settings import EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL, SERVER_EMAIL, EMAIL_USE_TLS, EMAIL_USE_SSL, EMAIL_PORT
 except: 
     #TODO print message
     raise
@@ -275,7 +265,7 @@ HOOK_DELIVERER = 'va_saas.webhooks.rest_hook_handler'
 SILVER_PAYMENT_TOKEN_EXPIRATION = datetime.timedelta(days = 5)
 PAYMENT_METHOD_SECRET = "SECRET METHOD" 
 #CPAY stuff
-from cpay_settings import CPAY_MERCHANT_ID, CPAY_MERCHANT_NAME, CPAY_PASSWORD
+from .cpay_settings import CPAY_MERCHANT_ID, CPAY_MERCHANT_NAME, CPAY_PASSWORD
 
 try:
     print ('Importing settings. ')
