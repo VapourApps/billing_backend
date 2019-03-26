@@ -249,7 +249,8 @@ SERVER_EMAIL = SERVER_EMAIL or None
 
 # Media settings, for uploading images. 
 
-MEDIA_ROOT = '/var/www/billing_backend_novobox/va_purchase_project/media'
+
+MEDIA_ROOT = os.path.dirname(os.path.abspath(__file__ + "../..")) + '/media'
 MEDIA_URL = '/media/'
 
 #django-rest-hooks settings, for creating webhooks
@@ -268,8 +269,8 @@ PAYMENT_METHOD_SECRET = "SECRET METHOD"
 from .cpay_settings import CPAY_MERCHANT_ID, CPAY_MERCHANT_NAME, CPAY_PASSWORD
 
 try:
-    print ('Importing settings. ')
     from custom_apps.settings import *
 except ImportError: 
-    print ('No custom apps settings. ')
+    pass
+#    print ('No custom apps settings. ')
 

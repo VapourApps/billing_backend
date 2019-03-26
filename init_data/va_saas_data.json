@@ -1,0 +1,139 @@
+[
+    {
+        "fields": {
+            "company_name": "VapourApps"
+        },
+        "model": "va_saas.companypage",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "company_page": 2,
+            "features_header": "How does it work?",
+            "features_image": "https://turnkeytown.com/products/img/pro/ubereats-clone-script/ubereats-clone-script-slider.png",
+            "features_text": "Get your cloud dashboard in 5 minutes."
+        },
+        "model": "va_saas.companypageabout",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "belongs_to_page": 2,
+            "step_details": "Create your profile and you get access to your dashboard within minutes.",
+            "step_header": "Subscribe to our system"
+        },
+        "model": "va_saas.companypageaboutsteps",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "belongs_to_page": 2,
+            "step_details": "From your subscribers section, you can connect to your dashboard",
+            "step_header": "Logon to your dashboard"
+        },
+        "model": "va_saas.companypageaboutsteps",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "belongs_to_page": 2,
+            "step_details": "Add your cloud providers and launch your applications.",
+            "step_header": "Create your infrastructure"
+        },
+        "model": "va_saas.companypageaboutsteps",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "belongs_to_list": 1,
+            "feature_details": "Control everything, both your infrastructure and your applictaions from a single dashboard.",
+            "feature_header": "Access from everywhere",
+            "feature_image": "wallhaven-432104.png"
+        },
+        "model": "va_saas.companypagefeature",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "belongs_to_list": 1,
+            "feature_details": "Manage logs, billing data and VPN connections out of the box.",
+            "feature_header": "Management",
+            "feature_image": "wallhaven-144901.jpg"
+        },
+        "model": "va_saas.companypagefeature",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "belongs_to_list": 1,
+            "feature_details": "Connect 3rd party applications or add new applications with custom panels.",
+            "feature_header": "Create your own panels",
+            "feature_image": "wallhaven-99909.jpg"
+        },
+        "model": "va_saas.companypagefeature",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "belongs_to_list": 1,
+            "feature_details": "We provide preconfigured apps for core features such as active directory, filesharing, backup, etc.",
+            "feature_header": "Apps",
+            "feature_image": "wallhaven-73873.png"
+        },
+        "model": "va_saas.companypagefeature",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "belongs_to_list": 1,
+            "feature_details": "Access all of the functions through APIs. Integrate external applications or workflows.",
+            "feature_header": "API",
+            "feature_image": "azul.jpg"
+        },
+        "model": "va_saas.companypagefeature",
+        "pk": 5
+    },
+    {
+        "fields": {
+            "belongs_to_list": 1,
+            "feature_details": "24x7 support, through our knowledgebase and ticketing system https://support.va.mk",
+            "feature_header": "Support",
+            "feature_image": "cactus_needles_flowers_thorns_109100_1920x1080.jpg"
+        },
+        "model": "va_saas.companypagefeature",
+        "pk": 6
+    },
+    {
+        "fields": {
+            "company_page": 2
+        },
+        "model": "va_saas.companypagefeatureslist",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "company_page": 2,
+            "footer_facebook": "https://www.facebook.com/vapourapps/",
+            "footer_instagram": "http://billing.vapour-apps.com/#instagram",
+            "footer_logo": "https://owncloud.va.mk/index.php/apps/files_sharing/ajax/publicpreview.php?x=1366&y=332&a=true&file=RGB_VapourApps_Logo_112314_Final_hi_sign.png&t=jVKI6XZ3Tj0aVQy&scalingup=0",
+            "footer_text": "We deliver the core tools you need to manage your IT infrastructure",
+            "footer_twitter": "https://twitter.com/vapourapps",
+            "footer_youtube": "https://www.youtube.com/channel/UCD8gFnyKbBweW-slZkDS6_Q",
+            "header_logo": "https://vapour-apps.com/wp-content/uploads/2015/10/VapourApps_Logo3.png",
+            "landing_header": "Own and control your private cloud",
+            "landing_image": "https://vapour-apps.com/wp-content/uploads/2015/08/VapourApps-Master.jpg",
+            "landing_text": "VapourApps is an easy to use private cloud dashboard with integrated applications."
+        },
+        "model": "va_saas.companypagelanding",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "company_page": 2,
+            "pricing_details": "No additional costs for extra licenses, cloud experts and apps.",
+            "pricing_header": "Control your costs and your billing"
+        },
+        "model": "va_saas.companypagepricing",
+        "pk": 1
+    }
+]
