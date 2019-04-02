@@ -256,7 +256,7 @@ MEDIA_URL = '/media/'
 #django-rest-hooks settings, for creating webhooks
 
 HOOK_EVENTS = {
-        'customer.added' : 'silver.Customer.created',
+        'customer.added' : 'silver.Customer.created+',
         'subscription.added' : 'silver.Subscription.created+',
 }
 

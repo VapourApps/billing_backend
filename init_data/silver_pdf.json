@@ -1,0 +1,72 @@
+[
+    {
+        "fields": {
+            "dirty": 3,
+            "pdf_file": "",
+            "upload_path": "documents/vejpr-aplikacii-doo/invoice/2018/11/26/Invoice_va-invoice2-1.pdf",
+            "uuid": "d45e1401-d648-45cc-968d-431b59601e08"
+        },
+        "model": "silver.pdf",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "dirty": 3,
+            "pdf_file": "",
+            "upload_path": "documents/vejpr-aplikacii-doo/invoice/2018/11/15/Invoice_va-invoice--1.pdf",
+            "uuid": "045480a8-bfc3-4bc7-aa17-fe8dbd0fbb28"
+        },
+        "model": "silver.pdf",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "dirty": 4,
+            "pdf_file": "",
+            "upload_path": "documents/vejpr-aplikacii-doo/invoice/2018/11/26/Invoice_nino-test-1.pdf",
+            "uuid": "38cb9001-e18e-4037-b06e-28cb70ca3df5"
+        },
+        "model": "silver.pdf",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "dirty": 0,
+            "pdf_file": "documents/vejpr-aplikacii-doo/invoice/2018/11/26/Invoice_va-invoice--1.pdf",
+            "upload_path": "documents/vejpr-aplikacii-doo/invoice/2018/11/26/Invoice_va-invoice--1.pdf",
+            "uuid": "d0de119a-d20b-449c-a546-32f220ea4d84"
+        },
+        "model": "silver.pdf",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "dirty": 0,
+            "pdf_file": "documents/vejpr-aplikacii-doo/invoice/2018/11/28/Invoice_va-invoice--2.pdf",
+            "upload_path": "documents/vejpr-aplikacii-doo/invoice/2018/11/28/Invoice_va-invoice--2.pdf",
+            "uuid": "f25032c5-62e7-4c9f-9949-043acc636638"
+        },
+        "model": "silver.pdf",
+        "pk": 5
+    },
+    {
+        "fields": {
+            "dirty": 0,
+            "pdf_file": "documents/vejpr-aplikacii-doo/invoice/2018/12/06/Invoice_va-invoice3-1.pdf",
+            "upload_path": "documents/vejpr-aplikacii-doo/invoice/2018/12/06/Invoice_va-invoice3-1.pdf",
+            "uuid": "556328da-b07d-4638-ba84-c5c7959eac42"
+        },
+        "model": "silver.pdf",
+        "pk": 6
+    },
+    {
+        "fields": {
+            "dirty": 0,
+            "pdf_file": "documents/vejpr-aplikacii-doo/invoice/2018/12/06/Invoice_va-invoice4-1.pdf",
+            "upload_path": "documents/vejpr-aplikacii-doo/invoice/2018/12/06/Invoice_va-invoice4-1.pdf",
+            "uuid": "ebd55990-bfcd-4016-96bf-b01ac2b9515a"
+        },
+        "model": "silver.pdf",
+        "pk": 7
+    }
+]

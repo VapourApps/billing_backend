@@ -1,0 +1,31 @@
+[
+    {
+        "fields": {
+            "address_1": "ul. Hristo Smirnenski 42, lokal 2",
+            "address_2": null,
+            "city": "Skopje",
+            "company": "Vejpr Aplikacii Doo",
+            "country": "MK",
+            "cycle_billing_duration": "00:00:05",
+            "default_document_state": "issued",
+            "email": null,
+            "extra": "VapourApps Private cloud",
+            "flow": "invoice",
+            "generate_documents_on_trial_end": true,
+            "invoice_series": "va-invoice-",
+            "invoice_starting_number": 1,
+            "live": true,
+            "meta": null,
+            "name": "VapourApps",
+            "phone": null,
+            "prebill_plan": true,
+            "proforma_series": "va-pro-invoice-",
+            "proforma_starting_number": 1,
+            "separate_cycles_during_trial": false,
+            "state": null,
+            "zip_code": "1000"
+        },
+        "model": "silver.provider",
+        "pk": 1
+    }
+]

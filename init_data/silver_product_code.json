@@ -1,0 +1,37 @@
+[
+    {
+        "fields": {
+            "value": "va-master-only"
+        },
+        "model": "silver.productcode",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "value": "va-master-500"
+        },
+        "model": "silver.productcode",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "value": "vapourapps-support"
+        },
+        "model": "silver.productcode",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "value": "va-development"
+        },
+        "model": "silver.productcode",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "value": "product-daily"
+        },
+        "model": "silver.productcode",
+        "pk": 5
+    }
+]

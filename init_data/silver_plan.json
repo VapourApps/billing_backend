@@ -1,0 +1,116 @@
+[
+    {
+        "fields": {
+            "amount": "100.0000",
+            "currency": "EUR",
+            "cycle_billing_duration": null,
+            "enabled": true,
+            "generate_after": 0,
+            "generate_documents_on_trial_end": true,
+            "interval": "month",
+            "interval_count": 1,
+            "metered_features": [
+                1
+            ],
+            "name": "VapourApps Hosted",
+            "prebill_plan": true,
+            "private": false,
+            "product_code": 1,
+            "provider": 1,
+            "separate_cycles_during_trial": false,
+            "trial_period_days": 14
+        },
+        "model": "silver.plan",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "amount": "225.0000",
+            "currency": "EUR",
+            "cycle_billing_duration": "00:00:02",
+            "enabled": true,
+            "generate_after": 60,
+            "generate_documents_on_trial_end": true,
+            "interval": "month",
+            "interval_count": 1,
+            "metered_features": [
+                1
+            ],
+            "name": "VapourApps Hosted + 500GB",
+            "prebill_plan": true,
+            "private": false,
+            "product_code": 2,
+            "provider": 1,
+            "separate_cycles_during_trial": false,
+            "trial_period_days": 7
+        },
+        "model": "silver.plan",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "amount": "50.0000",
+            "currency": "EUR",
+            "cycle_billing_duration": null,
+            "enabled": true,
+            "generate_after": 0,
+            "generate_documents_on_trial_end": null,
+            "interval": "month",
+            "interval_count": 1,
+            "metered_features": [],
+            "name": "VapourApps Support",
+            "prebill_plan": false,
+            "private": true,
+            "product_code": 3,
+            "provider": 1,
+            "separate_cycles_during_trial": false,
+            "trial_period_days": 0
+        },
+        "model": "silver.plan",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "amount": "1.0000",
+            "currency": "EUR",
+            "cycle_billing_duration": null,
+            "enabled": true,
+            "generate_after": 0,
+            "generate_documents_on_trial_end": false,
+            "interval": "month",
+            "interval_count": 1,
+            "metered_features": [],
+            "name": "Software development",
+            "prebill_plan": false,
+            "private": true,
+            "product_code": 4,
+            "provider": 1,
+            "separate_cycles_during_trial": true,
+            "trial_period_days": 0
+        },
+        "model": "silver.plan",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "amount": "150.0000",
+            "currency": "MKD",
+            "cycle_billing_duration": null,
+            "enabled": true,
+            "generate_after": 0,
+            "generate_documents_on_trial_end": false,
+            "interval": "day",
+            "interval_count": 1,
+            "metered_features": [],
+            "name": "PLAN (Daily)",
+            "prebill_plan": false,
+            "private": false,
+            "product_code": 5,
+            "provider": 1,
+            "separate_cycles_during_trial": true,
+            "trial_period_days": null
+        },
+        "model": "silver.plan",
+        "pk": 6
+    }
+]

@@ -1,0 +1,66 @@
+[
+    {
+        "fields": {
+            "cancel_date": "2018-11-30",
+            "customer": 1,
+            "description": "VapourApps Support",
+            "ended_at": null,
+            "meta": "{\n  \"va-master\": \"https://demo.va.mk\",\n  \"va-master-pass\": \"Ohcev1wi\",\n  \"va-master-user\": \"admin\"\n}",
+            "plan": 1,
+            "reference": "01",
+            "start_date": "2018-10-01",
+            "state": "canceled",
+            "trial_end": "2018-10-10"
+        },
+        "model": "silver.subscription",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "cancel_date": null,
+            "customer": 1,
+            "description": "\u0420\u0430\u0437\u0432\u043e\u0458 \u043d\u0430 \u0441\u043e\u0444\u0442\u0432\u0435\u0440\u0441\u043a\u0438 \u043c\u043e\u0434\u0443\u043b",
+            "ended_at": null,
+            "meta": "{}",
+            "plan": 4,
+            "reference": "0003",
+            "start_date": "2018-10-30",
+            "state": "inactive",
+            "trial_end": null
+        },
+        "model": "silver.subscription",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "cancel_date": null,
+            "customer": 1,
+            "description": "Description",
+            "ended_at": null,
+            "meta": "{}",
+            "plan": 6,
+            "reference": null,
+            "start_date": "2018-11-26",
+            "state": "active",
+            "trial_end": null
+        },
+        "model": "silver.subscription",
+        "pk": 41
+    },
+    {
+        "fields": {
+            "cancel_date": null,
+            "customer": 2,
+            "description": null,
+            "ended_at": null,
+            "meta": "{\n  \"Apps included\": {\n    \" clou\": false,\n    \" e-mail\": false,\n    \" proxy\": false,\n    \"directory\": false\n  },\n  \"Dejnost\": {\n    \" \\u043e\\u0431\\u0440\\u0430\\u0437\\u043e\\u0432\\u0430\\u043d\\u0438\\u0435\": false,\n    \" \\u0442\\u0435\\u043b\\u0435\\u043a\\u043e\\u043c\": false,\n    \"\\u0433\\u0440\\u0430\\u0434\\u0435\\u0436\": false\n  },\n  \"Domain name\": \"\",\n  \"Log management\": \"small\",\n  \"Password\": \"\",\n  \"vm_data\": {\n    \"image\": \"debian-9.5.6-20181013\",\n    \"network\": \"default\"\n  }\n}",
+            "plan": 1,
+            "reference": null,
+            "start_date": "2019-01-10",
+            "state": "inactive",
+            "trial_end": null
+        },
+        "model": "silver.subscription",
+        "pk": 48
+    }
+]
