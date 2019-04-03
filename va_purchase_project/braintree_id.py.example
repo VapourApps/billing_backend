@@ -1,0 +1,4 @@
+BRAINTREE_MERCHANT_ID = 'example_merchant_id'
+BRAINTREE_PUBLIC_KEY = 'example_public_key'
+BRAINTREE_PRIVATE_KEY = 'example_private_key'
+
