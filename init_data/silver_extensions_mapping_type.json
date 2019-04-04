@@ -1,0 +1,23 @@
+[
+    {
+        "model": "silver_extensions.mappingtype",
+        "pk": 1,
+        "fields": {
+            "name": "owner"
+        }
+    },
+    {
+        "model": "silver_extensions.mappingtype",
+        "pk": 2,
+        "fields": {
+            "name": "partner"
+        }
+    },
+    {
+        "model": "silver_extensions.mappingtype",
+        "pk": 3,
+        "fields": {
+            "name": "it_admin"
+        }
+    }
+]

@@ -1,0 +1,20 @@
+[
+    {
+        "model": "silver_extensions.usercustomermapping",
+        "pk": 1,
+        "fields": {
+            "customer": 1,
+            "user": 1,
+            "relation_type": 1
+        }
+    },
+    {
+        "model": "silver_extensions.usercustomermapping",
+        "pk": 2,
+        "fields": {
+            "customer": 2,
+            "user": 1,
+            "relation_type": 1
+        }
+    }
+]

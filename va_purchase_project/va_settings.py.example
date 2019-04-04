@@ -1,0 +1,4 @@
+VA_DOMAIN = 'localhost:8443'
+BILLING_FRONTEND = 'http://localhost:8000'
+SECRET_KEY = 'example_secret_key'
+
