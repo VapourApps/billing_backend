@@ -132,9 +132,9 @@ dmypy.json
 # VA custom ignores
 
 # Creds and other files used in settings.py
-#silver_extensions/migrations*
-#silver_cpay/migrations*
-#va_saas/migrations*
+silver_extensions/migrations*
+silver_cpay/migrations*
+va_saas/migrations*
 va_billing_venv
 custom_apps/*/
 custom_apps/settings.py
