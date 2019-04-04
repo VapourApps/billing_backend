@@ -12,7 +12,10 @@ class PlanFeatures(models.Model):
     plan = models.ForeignKey(Plan, on_delete = models.CASCADE, default = None)
 
     def __unicode__(self):
-        return 'Feature for ' + self.plan.__unicode__()
+        return 'Feature for ' + self.plan.__str__()
+
+    def __str__(self):
+        return self.__unicode__()
 
 
 class PlanSteps(models.Model):
@@ -22,7 +25,10 @@ class PlanSteps(models.Model):
     belongs_to = models.ForeignKey(PlanFeatures, on_delete = models.CASCADE)
 
     def __unicode__(self):
-        return 'Step type %s for %s' % (self.step_input_type, self.belongs_to.plan.__unicode__())
+        return 'Step type %s for %s' % (self.step_input_type, self.belongs_to.plan.__str__())
+
+    def __str__(self):
+        return self.__unicode__()
 
 
 class MappingType(models.Model):

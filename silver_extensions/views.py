@@ -93,7 +93,7 @@ def get_subscriptions_for_customer(customer):
         'interval_count' : subscription.plan.interval_count,
         'amount': subscription.plan.amount,
         'currency' : subscription.plan.currency,
-        'meters' : [x.to_dict() for x in subscription.meter_set.all()],
+#        'meters' : [x.to_dict() for x in subscription.meter_set.all()],
     } for subscription in customer.subscriptions.all()]
     return subs
 
