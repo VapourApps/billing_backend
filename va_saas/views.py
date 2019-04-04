@@ -29,7 +29,7 @@ from .serializers import UserSerializer, UserSerializerWithToken
 import requests, json
 
 from silver.models import Customer, Invoice
-from silver_extensions.models import UserCustomerMapping
+from silver_extensions.models import UserCustomerMapping, MappingType
 from va_purchase_project.va_settings import BILLING_FRONTEND
 
 def obtain_jwt_token(request):
@@ -126,7 +126,8 @@ def map_customer_user(request):
 
     customer = Customer.objects.filter(id = data['customer_id']).all()[0]
     relation_type = data['relation_type']
-    relation_type = UserCustomerMapping(customer = customer, user = request.user, relation_type = relation_type)
+    new_relation_type = MappingType.objects.filter(name = relation_type).all()[0]
+    relation_type = UserCustomerMapping(customer = customer, user = request.user, relation_type = new_relation_type)
     relation_type.save()
 
     return Response('Success!') 

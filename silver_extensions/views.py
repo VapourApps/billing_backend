@@ -55,7 +55,7 @@ def get_plans(request):
 
 @api_view(['GET'])
 def get_customers(request):
-    user = current_user(request)
+    user = current_user(request._request)
     user_relationship = se.UserCustomerMapping.objects.filter(user_id = request.user.id).all()
 
     customers = [model_to_dict(x.customer) for x in user_relationship]
