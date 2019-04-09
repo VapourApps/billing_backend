@@ -145,7 +145,7 @@ def pay_select(request, invoice_series = None):
 
 
 def pay_confirm(request, invoice_series= None):
-    # you custom code for payment confirmation goes here. 
+    # you custom code for payment confirmation goes here.
     # This is the page that is shown before the redirec to Cpay
 
     # at the end call the generate_cpay_form from silver_cpay, to generate the cpay form
@@ -156,4 +156,38 @@ def pay_confirm(request, invoice_series= None):
     print ('Returning cpay_form')
     return generate_cpay_form(request, extra_context={
         'invoice' : invoice,
+    })
+
+
+############
+# HALKBANK #
+############
+
+def halk_payment_ok(request, halk_request_id=None):
+    cpay_request = Payment_Request.objects.get(id=halk_request_id)
+    return HttpResponse("Your payment success page. Payment request ID:{}".format(cpay_request.id))
+
+
+def halk_payment_fail(request, halk_request_id=None):
+    cpay_request = Payment_Request.objects.get(id=halk_request_id)
+    return HttpResponse("Your payment fail page. Payment request ID: {}".format(cpay_request.id))
+
+
+def halk_pay_select(request):
+    # you custom code goes here
+    return render(request, 'silver_extensions/halk_pay_select.html', {
+        'pay_confirm_url': request.build_absolute_uri(reverse('halk-pay-confirm')),
+        'redirect_ok_url': request.build_absolute_uri(reverse('halk-pay-ok')),
+        'redirect_fail_url': request.build_absolute_uri(reverse('halk-pay-fail'))
+    })
+
+
+def halk_pay_confirm(request):
+    # you custom code goes here
+
+    # at the end call the generate_cpay_form from silver_cpay, to generate the cpay form
+    # add the extra_context parameter for any additional template vars that you want
+    return generate_cpay_form(request, extra_context={
+        'custom_template_var_1': 'value_1',
+        'custom_template_var_2': 'value_2',
     })

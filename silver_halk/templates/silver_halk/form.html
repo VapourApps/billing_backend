@@ -1,0 +1,12 @@
+{% if error %}
+	<div class='halk-error'>{{error}}</div>
+{% else %}
+	<form class='halk-params-form' method = 'POST' action='{{url}}'>
+	{% for name,value in params.items %}
+	<input type = 'hidden' name = '{{name}}' value='{{value}}' >
+	{% endfor %}
+	<button type='submit'>Submit</button>
+	</form>
+{% endif %}
+
+

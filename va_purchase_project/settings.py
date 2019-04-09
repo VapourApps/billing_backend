@@ -69,7 +69,8 @@ INSTALLED_APPS = [
     'va_saas',
     'silver_extensions',
     'rest_hooks', 
-    'silver_cpay'
+    'silver_cpay',
+    'silver_halk',
 ]
 
 INSTALLED_APPS += get_custom_apps()
@@ -220,6 +221,9 @@ PAYMENT_PROCESSORS = {
     },
     'cpay': {
         'class': 'silver_cpay.payment_processors.CpayTriggered',
+    },
+    'halk': {
+        'class': 'silver_halk.payment_processors.HalkTriggered',
     }
 }
 
@@ -267,6 +271,7 @@ SILVER_PAYMENT_TOKEN_EXPIRATION = datetime.timedelta(days = 5)
 PAYMENT_METHOD_SECRET = "SECRET METHOD" 
 #CPAY stuff
 from .cpay_settings import CPAY_MERCHANT_ID, CPAY_MERCHANT_NAME, CPAY_PASSWORD
+from .halk_settings import *
 
 try:
     from custom_apps.settings import *
