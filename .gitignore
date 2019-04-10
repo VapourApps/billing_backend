@@ -143,4 +143,9 @@ va_purchase_project/va_settings.py
 va_purchase_project/billing_settings.py
 va_purchase_project/email_settings.py
 va_purchase_project/db_settings.py
+va_purchase_project/braintree_id.py.example
+va_purchase_project/va_settings.py.example
+va_purchase_project/billing_settings.py.example
+va_purchase_project/email_settings.py.example
+va_purchase_project/db_settings.py.example
 *.db
