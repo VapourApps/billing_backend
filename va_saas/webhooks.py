@@ -79,8 +79,6 @@ def rest_hook_handler(target, payload, instance, hook):
 
 #This was a test to see if the custom hook firing works but for some reason it doesn't. Oh well, I managed to hack together a solution. 
 def find_and_fire_hook(event_name, instance, **kwargs):
-    open('/tmp/nesho', 'w').write('debugging')
-    print ('Firing hook')
     filters = {
         'event': event_name,
     }
