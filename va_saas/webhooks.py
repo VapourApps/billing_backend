@@ -2,43 +2,54 @@ import json, requests, threading
 from django.db import models
 
 from rest_hooks.models import AbstractHook
+from silver.models import Subscription
 
 #This is the very specific case where we have a subscription hook which creates a vm
 #We should definitely try and get this to be a general case but for the moment I guess not
 #This gets called if the webhook procced on subscription.added.new_vm. Then, if the subscription.metadata contains a "vm_data" field, it generates proper vm_data payload. 
 def subscription_vm_handler(hook, target, payload):
 
-    #vm_data = {u'username': u'root', u'network': u'default', u'image': u'debian-9.5.6-20181013-openstack-amd64.qcow2', u'storage': u'500', u'provider_name': u'libvirt', u'size': u'va-small'}
+    vm_data = {u'username': u'root', u'network': u'default', u'image': u'debian-9.5.6-20181013-openstack-amd64.qcow2', u'storage': u'500', u'provider_name': u'libvirt', u'size': u'va-small'}
     print ('Payload', payload)
-    vm_data = payload['fields']['meta']
-    vm_data = json.loads(vm_data)
-    novobox_name = vm_data.get('novobox_name', '')
-    vm_data = vm_data.get('vm_data', {})
-    vm_data['server_name'] = novobox_name
+#    vm_data = payload['fields']['meta']
+#    vm_data = json.loads(vm_data)
+#    novobox_name = vm_data.get('novobox_name', '')
+#    vm_data = vm_data.get('vm_data', {})
+#    vm_data['server_name'] = novobox_name
 
+    print ('Headers : ', hook.headers)
     headers = json.loads(hook.headers) or {'Content-type' : "application/json"}
     print ('Calling ', hook.method.lower(), ' on ', target,' with headers ', headers, ' and data ', vm_data)
 
-    print ('Starting creating task')
-    vm_creation_task = threading.Thread(target = subscription_handle_vm_creation, args = [hook.method.lower(), target, headers, vm_data])
-    vm_creation_task.start()
+    subscription = Subscription.objects.get(pk = payload['pk'])
 
+    if subscription_should_create_vm(subscription):
+        print ('Starting creating task')
+        vm_creation_task = threading.Thread(target = subscription_handle_vm_creation, args = [hook.method.lower(), target, headers, vm_data])
+        vm_creation_task.start()
+        subscription.meta['vm_data']['status'] = 'started'
+        subscription.save()
     print ('Starting (eventually) checking task')
-    vm_check_status = threading.Thread(target = subscription_vm_check_status, args = [target, headers])
+#    vm_check_status = threading.Thread(target = subscription_vm_check_status, args = [target, headers])
     return vm_data
 
+
+def subscription_should_create_vm(subscription):
+    if subscription.state == 'active' and not subscription.meta.get('vm_data', {}).get('status'):
+        print ('Starting vm!')
+        return True
 
 def subscription_handle_vm_creation(method, target, headers, vm_data):
     print ('In creation!, calling data')
     data = getattr(requests, method)(target, verify = False, headers = headers, data = json.dumps(vm_data))
-    print ('Finished!', data)
+    print ('Finished!', data.text)
 
 
 def subscription_vm_check_status(target, headers):
     pass
 
 specific_cases = {
-    'subscription.added' : subscription_vm_handler, 
+    'subscription.updated' : subscription_vm_handler, 
 }
 
 
@@ -46,9 +57,15 @@ class VAHook(AbstractHook):
     headers = models.CharField(max_length = 200, default = '{}')
     method = models.CharField(max_length = 6, default = 'get')
 
+    def __str__(self):
+        return self.target
+
+    def __unicode__(self):
+        return self.__str__()
+
 
 def rest_hook_handler(target, payload, instance, hook):
-    print ("I have ", target, payload, instance, hook)
+    print ("I have ", target, payload, instance, hook.__dict__, hook.target)
     
     hook = VAHook.objects.filter(target = hook.target)[0]
 
@@ -72,8 +89,6 @@ def rest_hook_handler(target, payload, instance, hook):
 
 #This was a test to see if the custom hook firing works but for some reason it doesn't. Oh well, I managed to hack together a solution. 
 def find_and_fire_hook(event_name, instance, **kwargs):
-    open('/tmp/nesho', 'w').write('wtf is this')
-    print ('Firing hook')
     filters = {
         'event': event_name,
     }

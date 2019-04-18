@@ -133,7 +133,6 @@ dmypy.json
 
 # Creds and other files used in settings.py
 silver_extensions/migrations*
-silver_cpay/migrations*
 va_saas/migrations*
 va_billing_venv
 custom_apps/*/
@@ -144,3 +143,4 @@ va_purchase_project/billing_settings.py
 va_purchase_project/email_settings.py
 va_purchase_project/db_settings.py
 *.db
+*.swp
