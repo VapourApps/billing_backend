@@ -2,6 +2,7 @@ import json, requests, threading
 from django.db import models
 
 from rest_hooks.models import AbstractHook
+from silver.models import Subscription
 
 #This is the very specific case where we have a subscription hook which creates a vm
 #We should definitely try and get this to be a general case but for the moment I guess not
@@ -20,14 +21,23 @@ def subscription_vm_handler(hook, target, payload):
     headers = json.loads(hook.headers) or {'Content-type' : "application/json"}
     print ('Calling ', hook.method.lower(), ' on ', target,' with headers ', headers, ' and data ', vm_data)
 
-    print ('Starting creating task')
-    vm_creation_task = threading.Thread(target = subscription_handle_vm_creation, args = [hook.method.lower(), target, headers, vm_data])
-    vm_creation_task.start()
+    subscription = Subscription.objects.get(pk = payload['pk'])
 
+    if subscription_should_create_vm(subscription):
+        print ('Starting creating task')
+        vm_creation_task = threading.Thread(target = subscription_handle_vm_creation, args = [hook.method.lower(), target, headers, vm_data])
+        vm_creation_task.start()
+        subscription.meta['vm_data']['status'] = 'started'
+        subscription.save()
     print ('Starting (eventually) checking task')
-    vm_check_status = threading.Thread(target = subscription_vm_check_status, args = [target, headers])
+#    vm_check_status = threading.Thread(target = subscription_vm_check_status, args = [target, headers])
     return vm_data
 
+
+def subscription_should_create_vm(subscription):
+    if subscription.state == 'active' and not subscription.meta.get('vm_data', {}).get('status'):
+        print ('Starting vm!')
+        return True
 
 def subscription_handle_vm_creation(method, target, headers, vm_data):
     print ('In creation!, calling data')
@@ -39,7 +49,7 @@ def subscription_vm_check_status(target, headers):
     pass
 
 specific_cases = {
-    'subscription.added' : subscription_vm_handler, 
+    'subscription.updated' : subscription_vm_handler, 
 }
 
 

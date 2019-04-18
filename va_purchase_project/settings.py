@@ -258,6 +258,7 @@ MEDIA_URL = '/media/'
 HOOK_EVENTS = {
         'customer.added' : 'silver.Customer.created+',
         'subscription.added' : 'silver.Subscription.created+',
+        'subscription.updated' : 'silver.Subscription.updated+',
 }
 
 HOOK_DELIVERER = 'va_saas.webhooks.rest_hook_handler'
