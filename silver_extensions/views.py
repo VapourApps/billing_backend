@@ -32,7 +32,8 @@ def get_plans(request):
 
     for plan in plans: 
         plan_features = se.PlanFeatures.objects.filter(plan_id = plan.id).all()
-        plan_result = model_to_dict(plan) 
+        plan_result = model_to_dict(plan)
+        plan_result['plan_provider'] = model_to_dict(plan.provider) 
 
         if plan_features:
             plan_feature = plan_features[0]
