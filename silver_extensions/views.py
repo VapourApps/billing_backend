@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import json
 from rest_framework.decorators import api_view, permission_classes
 from datetime import date
 
@@ -9,6 +10,7 @@ from django.http import JsonResponse, HttpResponse
 from django.forms.models import model_to_dict
 from django.core import serializers
 from silver import models as s
+from silver.models.subscriptions import BillingLog
 from va_saas.views import current_user
 from django.urls import reverse
 from silver_cpay.views import generate_cpay_form
@@ -56,11 +58,12 @@ def get_plans(request):
 
 
 def add_new_billing_log(request):
-    sub = Subscription.objects.get(pk = request.POST['subscription_id'])
+    data = json.loads(request.body.decode('utf-8'))
+    sub = Subscription.objects.get(pk = data['subscription_id'])
     d = date.today()
     b = BillingLog(subscription = sub, billing_date = d, metered_features_billed_up_to = d, plan_billed_up_to = d)
     b.save()
-
+    return JsonResponse({"success" : True})
 
 
 @api_view(['GET'])
