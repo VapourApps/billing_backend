@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from rest_framework.decorators import api_view, permission_classes
+from datetime import date
 
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
@@ -14,7 +15,7 @@ from silver_cpay.views import generate_cpay_form
 
 from . import models as se
 from silver_cpay.models import Payment_Request
-from silver.models import Invoice
+from silver.models import Invoice, Subscription
 
 def metered_feature_to_dict(metered_feature):
     data = {'name' : metered_feature.name, 'unit' : metered_feature.unit, 'price_per_unit' : metered_feature.price_per_unit, 'included_units' : metered_feature.included_units, 'product_code' : metered_feature.product_code.value}
@@ -52,6 +53,15 @@ def get_plans(request):
 
     result = {'success' : True, 'data' : result, 'message' : ''}
     return JsonResponse(result)
+
+
+def add_new_billing_log(request):
+    sub = Subscription.objects.get(pk = request.POST['subscription_id'])
+    d = date.today()
+    b = BillingLog(subscription = sub, billing_date = d, metered_features_billed_up_to = d, plan_billed_up_to = d)
+    b.save()
+
+
 
 @api_view(['GET'])
 def get_customers(request):

@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'cpay_payment_ok/(?P<cpay_request_id>[0-9]+)', views.cpay_payment_ok),
     url(r'cpay_payment_ok', views.cpay_payment_ok, name='pay-ok'),
     url(r'cpay_payment_fail/(?P<cpay_request_id>[0-9]+)', views.cpay_payment_fail,),
-    url(r'cpay_payment_fail', views.cpay_payment_fail, name='pay-fail')
+    url(r'cpay_payment_fail', views.cpay_payment_fail, name='pay-fail'),
+    url(r'add_billing_log', views.add_new_billing_log, name = 'add_billing_log'),
 ]
