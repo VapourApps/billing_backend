@@ -194,6 +194,9 @@ class Cpay_View_Set(viewsets.ViewSet):
                                                 invoice.pay()
                                 for proforma in proformas:
                                         proforma.pay()
+#                                        subscription.activate()
+#                                        BillingLog = nesho()
+#                                        BillingLog.save()
 
                         else:
                                 mail_admins(

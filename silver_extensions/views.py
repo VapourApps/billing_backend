@@ -16,6 +16,10 @@ from . import models as se
 from silver_cpay.models import Payment_Request
 from silver.models import Invoice
 
+def metered_feature_to_dict(metered_feature):
+    data = {'name' : metered_feature.name, 'unit' : metered_feature.unit, 'price_per_unit' : metered_feature.price_per_unit, 'included_units' : metered_feature.included_units, 'product_code' : metered_feature.product_code.value}
+    return data
+
 def get_plans(request):
     enabled = request.GET.get('enabled', True)
     plans = s.Plan.objects.filter(enabled = enabled)
@@ -26,15 +30,11 @@ def get_plans(request):
 
     result = []
 
-    #This field is not serialized by default, and is not required, so to avoid a bit of hassle, I'm just ignoring it
-    #There might be other fields. 
-    ignore_fields = ['metered_features']
-
     for plan in plans: 
         plan_features = se.PlanFeatures.objects.filter(plan_id = plan.id).all()
         plan_result = model_to_dict(plan)
         plan_result['plan_provider'] = model_to_dict(plan.provider) 
-
+        plan_result['metered_features'] = [metered_feature_to_dict(x) for x in plan.metered_features.all()]
         if plan_features:
             plan_feature = plan_features[0]
             feature = model_to_dict(plan_feature)
@@ -48,7 +48,6 @@ def get_plans(request):
             feature['plan_image'] = plan_feature.plan_image.url
 
             plan_result['feature'] = feature
-        plan_result = {x : plan_result[x] for x in plan_result if x not in ignore_fields}    
         result.append(plan_result)
 
     result = {'success' : True, 'data' : result, 'message' : ''}
