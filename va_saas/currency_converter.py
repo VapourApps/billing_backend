@@ -1,4 +1,4 @@
-import requests, json
+import requests, json, decimal
 
 class VACurrencyConverter(object):
     api_key = '82baab9cb0e6ea5a6060'
@@ -19,5 +19,5 @@ class VACurrencyConverter(object):
     def convert(self, amount, from_currency, to_currency, date):
         convert_rate = self.get_conversion_rate(from_currency, to_currency)
 
-        new_amount = amount * convert_rate
-        return amount
+        new_amount = decimal.Decimal(amount * convert_rate)
+        return new_amount
