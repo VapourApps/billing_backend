@@ -35,7 +35,7 @@ def subscription_vm_handler(hook, target, payload):
 
 
 def subscription_should_create_vm(subscription):
-    if subscription.state == 'active' and not subscription.meta.get('vm_data', {}).get('status'):
+    if subscription.state == 'active' and subscription.meta.get('vm_data') and not subscription.meta.get('vm_data', {}).get('status'):
         print ('Starting vm!')
         return True
 
