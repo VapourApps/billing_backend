@@ -63,6 +63,9 @@ def add_new_billing_log(request):
     sub = Subscription.objects.get(pk = data['subscription_id'])
     d = date.today()
     b = BillingLog(subscription = sub, billing_date = d, metered_features_billed_up_to = d, plan_billed_up_to = d)
+    if data.get('proforma_id'):
+        proforma = Proforma.objects.get(pk = data['proforma_id'])
+        b.proforma = proforma
     b.save()
     return JsonResponse({"success" : True})
 
