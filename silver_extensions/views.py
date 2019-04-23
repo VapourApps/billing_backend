@@ -38,6 +38,7 @@ def get_plans(request):
         plan_result = model_to_dict(plan)
         plan_result['plan_provider'] = model_to_dict(plan.provider) 
         plan_result['metered_features'] = [metered_feature_to_dict(x) for x in plan.metered_features.all()]
+        plan_result['product_code'] = model_to_dict(plan.product_code)
         if plan_features:
             plan_feature = plan_features[0]
             feature = model_to_dict(plan_feature)
@@ -62,6 +63,9 @@ def add_new_billing_log(request):
     sub = Subscription.objects.get(pk = data['subscription_id'])
     d = date.today()
     b = BillingLog(subscription = sub, billing_date = d, metered_features_billed_up_to = d, plan_billed_up_to = d)
+    if data.get('proforma_id'):
+        proforma = Proforma.objects.get(pk = data['proforma_id'])
+        b.proforma = proforma
     b.save()
     return JsonResponse({"success" : True})
 
