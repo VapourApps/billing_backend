@@ -23,6 +23,21 @@ def metered_feature_to_dict(metered_feature):
     data = {'name' : metered_feature.name, 'unit' : metered_feature.unit, 'price_per_unit' : metered_feature.price_per_unit, 'included_units' : metered_feature.included_units, 'product_code' : metered_feature.product_code.value}
     return data
 
+#NOTE this may only be used for our billing workflow
+#as such it should probably be placed in a separate file
+def change_subscription_status(request):
+    data = json.loads(request.body)
+    subscription_id, status = data['subscription_id'], data['status']
+    subscription = Subscription.objects.get(pk = subscription_id)
+    vm_data = subscription.meta.get('vm_data', {})
+    vm_data['status'] = status
+    subscription.meta['vm_data'] =vm_data 
+    subscription.save()
+
+    return HttpResponse(status=204)
+
+
+
 def get_plans(request):
     enabled = request.GET.get('enabled', True)
     plans = s.Plan.objects.filter(enabled = enabled)

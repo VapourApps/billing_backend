@@ -9,7 +9,7 @@ from silver.models import Subscription
 #This gets called if the webhook procced on subscription.added.new_vm. Then, if the subscription.metadata contains a "vm_data" field, it generates proper vm_data payload. 
 def subscription_vm_handler(hook, target, payload):
 
-    vm_data = {u'username': u'root', u'network': u'default', u'image': u'debian-9.5.6-20181013-openstack-amd64.qcow2', u'storage': u'500', u'provider_name': u'libvirt', u'size': u'va-small'}
+    vm_data = {'server_name' : 'hook-test', u'username': u'root', u'network': u'eth0', u'image': u'3ad9f5f026cb', u'storage': u'500', u'provider_name': u'lxc', u'size': u'va-small', 'subscription_id' : payload['pk'], 'role' : 'va-master'}
     print ('Payload', payload)
 #    vm_data = payload['fields']['meta']
 #    vm_data = json.loads(vm_data)
@@ -27,14 +27,13 @@ def subscription_vm_handler(hook, target, payload):
         print ('Starting creating task')
         vm_creation_task = threading.Thread(target = subscription_handle_vm_creation, args = [hook.method.lower(), target, headers, vm_data])
         vm_creation_task.start()
-        subscription.meta['vm_data']['status'] = 'started'
-        subscription.save()
-    print ('Starting (eventually) checking task')
+#    print ('Starting (eventually) checking task')
 #    vm_check_status = threading.Thread(target = subscription_vm_check_status, args = [target, headers])
     return vm_data
 
 
 def subscription_should_create_vm(subscription):
+    print ('Sub state ', subscription.state, ' vm data ', subscription.meta)
     if subscription.state == 'active' and subscription.meta.get('vm_data') and not subscription.meta.get('vm_data', {}).get('status'):
         print ('Starting vm!')
         return True
