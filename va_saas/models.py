@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from silver.models import Plan
+from .webhooks import VAHook
 
 class CompanyPage(models.Model):
     company_name = models.CharField(max_length = 100)
@@ -74,14 +75,14 @@ class CompanyPagePricing(models.Model):
     pricing_details = models.CharField(max_length = 500)
 
     def __unicode__(self):
-        return 'Pricing for ' +  self.pricing_header
+        return 'Pricing for ' + self.company_page.company_name
 
 class CompanyPageSignup(models.Model):
     company_page = models.ForeignKey(CompanyPage, on_delete = models.CASCADE, default = None)
     terms_text = models.CharField(max_length = 500)
 
     def __unicode__(self):
-        return 'Signup page for ' + company_page.company_name
+        return 'Signup page for ' + self.company_page.company_name
 
 class CompanyPageLoggedIn(models.Model):
     company_page = models.ForeignKey(CompanyPage, on_delete = models.CASCADE, default = None)
@@ -90,4 +91,4 @@ class CompanyPageLoggedIn(models.Model):
     support_email = models.CharField(max_length = 500)
 
     def __unicode__(self):
-        return 'Login page for ', company_page.company_name
+        return 'Login page for ', self.company_page.company_name

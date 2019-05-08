@@ -3,7 +3,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 from . import views
 
 urlpatterns = [
-    url(r'token-auth', obtain_jwt_token),
+    url(r'token-auth', views.obtain_jwt_token),
     url(r'get-user', views.current_user),
     url(r'change_user_password', views.change_user_password),
     url(r'users/', views.UserList.as_view()),
@@ -18,4 +18,6 @@ urlpatterns = [
     url(r'^get_features', views.get_features, name = 'get_features'),
     url(r'^get_invoices', views.get_invoices, name = 'get_invoices'),
 
+
+    url(r'^cpay_success', views.cpay_success), # This is only a temporary url, so we can test the workflow before the actual billing part is complete
 ]                                            

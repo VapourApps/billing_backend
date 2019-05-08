@@ -1,0 +1,73 @@
+[
+    {
+        "model": "silver_extensions.plansteps",
+        "pk": 7,
+        "fields": {
+            "step_input_type": "text",
+            "step_value": "",
+            "step_name": "Domain name",
+            "belongs_to": 8
+        }
+    },
+    {
+        "model": "silver_extensions.plansteps",
+        "pk": 8,
+        "fields": {
+            "step_input_type": "select",
+            "step_value": "small, medium",
+            "step_name": "Log management",
+            "belongs_to": 8
+        }
+    },
+    {
+        "model": "silver_extensions.plansteps",
+        "pk": 9,
+        "fields": {
+            "step_input_type": "checkbox",
+            "step_value": "directory, e-mail, proxy, clou",
+            "step_name": "Apps included",
+            "belongs_to": 8
+        }
+    },
+    {
+        "model": "silver_extensions.plansteps",
+        "pk": 10,
+        "fields": {
+            "step_input_type": "password",
+            "step_value": "",
+            "step_name": "Password",
+            "belongs_to": 8
+        }
+    },
+    {
+        "model": "silver_extensions.plansteps",
+        "pk": 11,
+        "fields": {
+            "step_input_type": "checkbox",
+            "step_value": "\u0433\u0440\u0430\u0434\u0435\u0436, \u0442\u0435\u043b\u0435\u043a\u043e\u043c, \u043e\u0431\u0440\u0430\u0437\u043e\u0432\u0430\u043d\u0438\u0435",
+            "step_name": "Dejnost",
+            "belongs_to": 8
+        }
+    },
+    {
+        "model": "silver_extensions.plansteps",
+        "pk": 12,
+        "fields": {
+            "step_input_type": "hidden",
+            "step_value": "default",
+            "step_name": "network",
+            "belongs_to": 8
+        }
+    },
+    {
+        "model": "silver_extensions.plansteps",
+        "pk": 13,
+        "fields": {
+            "step_input_type": "hidden",
+            "step_value": "debian-9.5.6-20181013",
+            "step_name": "image",
+            "belongs_to": 8
+        }
+    }
+]
+

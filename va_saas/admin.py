@@ -4,6 +4,9 @@ from __future__ import unicode_literals
 from django.contrib import admin
 
 from .models import CompanyPage, CompanyPageLanding, CompanyPageAbout, CompanyPageAboutSteps, CompanyPageFeaturesList, CompanyPagePricing, CompanyPageSignup, CompanyPageLoggedIn, CompanyPageFeature
+
+from .webhooks import VAHook
+
 class CompanyPageAdmin(admin.ModelAdmin):
     model = CompanyPage
 
@@ -61,6 +64,8 @@ class CompanyPageLoggedInAdmin(admin.ModelAdmin):
     list_filter = ('company_page__company_name', )
     list_display = ('company_page', 'support_email', )
 
+class VAHookAdmin(admin.ModelAdmin):
+    model = VAHook
 
 
 admin.site.register(CompanyPage, CompanyPageAdmin)
@@ -72,4 +77,4 @@ admin.site.register(CompanyPagePricing, CompanyPagePricingAdmin)
 admin.site.register(CompanyPageSignup, CompanyPageSignupAdmin)
 admin.site.register(CompanyPageLoggedIn, CompanyPageLoggedInAdmin)
 admin.site.register(CompanyPageAboutSteps, CompanyPageAboutStepsAdmin)
-
+admin.site.register(VAHook, VAHookAdmin)

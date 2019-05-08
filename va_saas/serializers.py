@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
-
+from django.conf import settings
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -43,17 +43,23 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         instance.save()
         
         mail_subject = 'Activate your ~VA~ account.'
+        instance_uid = urlsafe_base64_encode(force_bytes(instance.pk))
+        instance_token = account_activation_token.make_token(instance)
         message = render_to_string('signup.html', {
             'user': instance,
-            'domain': 'billing-api.vapour-apps.com',
-            'uid':urlsafe_base64_encode(force_bytes(instance.pk)),
-            'token':account_activation_token.make_token(instance),
+            'domain': settings.VA_DOMAIN,
+            'uid': instance_uid,
+            'token': instance_token,
         })
+        print ('Sending ', message)
+        print ('UID is ', instance_uid)
+        print ('Token is ', instance_token)
         to_email = validated_data.get('email')
         email = EmailMessage(
                     mail_subject, message, to=[to_email]
         )
         email.send()
+        print ('Sent!')
         return instance
 
     class Meta:

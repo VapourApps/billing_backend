@@ -1,0 +1,38 @@
+[
+    {
+        "fields": {
+            "included_units": "20.0000",
+            "included_units_during_trial": "20.0000",
+            "name": "Employees",
+            "price_per_unit": "5.0000",
+            "product_code": 1,
+            "unit": "va_empl"
+        },
+        "model": "silver.meteredfeature",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "included_units": "0.0000",
+            "included_units_during_trial": "0.0000",
+            "name": "SupportEmployees",
+            "price_per_unit": "10.0000",
+            "product_code": 3,
+            "unit": "support_empl"
+        },
+        "model": "silver.meteredfeature",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "included_units": "0.0000",
+            "included_units_during_trial": "0.0000",
+            "name": "DevelopmentHours",
+            "price_per_unit": "15.0000",
+            "product_code": 4,
+            "unit": "dev_hours"
+        },
+        "model": "silver.meteredfeature",
+        "pk": 3
+    }
+]

@@ -11,15 +11,16 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 import datetime
 import os, braintree
-
 try:
-    import braintree_id
-    import creds
-except: 
-    raise Exception("To use this django app, you must have a creds.py and braintree_id.py file with certain data. braintree_id needs the BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY and BRAINTREE_PRIVATE_KEY variables, and creds needs SECRET_KEY (which holds the django secret key) as well as EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL and SERVER_EMAIL variables. These are excluded from the repo for security reasons. ")
+    from . import braintree_id
+    from .va_settings import VA_DOMAIN, BILLING_FRONTEND, SECRET_KEY 
 
-from braintree_id import BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY, BRAINTREE_PRIVATE_KEY
-from creds import SECRET_KEY
+except:
+    #TODO proper message
+    raise Exception("To use this django app, you must have a va_settings.py and braintree_id.py file with certain data. braintree_id needs the BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY and BRAINTREE_PRIVATE_KEY variables, and va_settings needs SECRET_KEY (which holds the django secret key), BILLING_FRONTEND (which holds the address of the frontend, for redirect purposes)  as well as VA_DOMAIN (for sending e-mail. These are excluded from the repo for security reasons. ")
+
+from custom_apps.apps import get_custom_apps
+from .braintree_id import BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY, BRAINTREE_PRIVATE_KEY
 
 BRAINTREE_MERCHANT_ID = BRAINTREE_MERCHANT_ID or None
 BRAINTREE_PUBLIC_KEY = BRAINTREE_PUBLIC_KEY or None
@@ -33,8 +34,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRET_KEY or ''
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -68,10 +68,14 @@ INSTALLED_APPS = [
     'corsheaders',
     'va_saas',
     'silver_extensions',
+    'rest_hooks', 
+    'silver_cpay'
 ]
 
+INSTALLED_APPS += get_custom_apps()
+
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days = 365),
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
     'JWT_ALLOW_REFRESH': True,
 #    'JWT_AUTH_HEADER_PREFIX': 'Token'
@@ -91,6 +95,10 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES' : (
+        'rest_framework.renderers.JSONRenderer', 
+        'rest_framework.renderers.BrowsableAPIRenderer', 
+    ), 
     'DEFAULT_PERMISSION_CLASSES' : (
         'rest_framework.permissions.IsAuthenticated',
     ),
@@ -133,12 +141,14 @@ WSGI_APPLICATION = 'va_purchase_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+try:
+    from .db_settings import DATABASES 
+
+except:
+    #TODO proper message
+    raise Exception("To use this django app, you must have a db_settings file with certain data.")
+
+DATABASES = DATABASES or None
 
 
 # Password validation
@@ -178,7 +188,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/va_billing_api/va_purchase_project/static'
+#STATICFILES_DIRS = [
+#    '/var/www/billing_backend_vodovod/custom_apps/meter_app/',
+#]
+STATIC_ROOT = '/var/www/billing_backend_vodovod/static'
 
 
 #userprofiles settings
@@ -204,23 +217,31 @@ PAYMENT_PROCESSORS = {
     'braintree_recurring': {
         'class': 'silver_braintree.payment_processors.BraintreeTriggeredRecurring',
         'setup_data': braintree_setup_data,
+    },
+    'cpay': {
+        'class': 'silver_cpay.payment_processors.CpayTriggered',
     }
 }
 
 SILVER_AUTOMATICALLY_CREATE_TRANSACTIONS = True
 SILVER_DOCUMENT_PREFIX = 'documents/'
 SILVER_DOCUMENT_STORAGE = None
+SILVER_CURRENCY_CONVERTER = 'va_saas.VACurrencyConverter'
 PDF_GENERATION_TIME_LIMIT = 60
 
 TRANSACTION_SAVE_TIME_LIMIT = 5
 
 # Email settings - for account confirmation
 
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+try:
+    from .email_settings import EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL, SERVER_EMAIL, EMAIL_USE_TLS, EMAIL_USE_SSL, EMAIL_PORT
+except: 
+    #TODO print message
+    raise
 
-from creds import EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL, SERVER_EMAIL
-
+EMAIL_USE_TLS = EMAIL_USE_TLS or None
+EMAIL_USE_SSL = EMAIL_USE_SSL or None
+EMAIL_PORT = EMAIL_PORT or None
 EMAIL_HOST = EMAIL_HOST or None
 EMAIL_HOST_USER = EMAIL_HOST_USER or None
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD or None
@@ -229,5 +250,29 @@ SERVER_EMAIL = SERVER_EMAIL or None
 
 # Media settings, for uploading images. 
 
-MEDIA_ROOT = '/var/www/va_billing_api/va_purchase_project/media'
+
+MEDIA_ROOT = os.path.dirname(os.path.abspath(__file__ + "../..")) + '/media'
 MEDIA_URL = '/media/'
+
+#django-rest-hooks settings, for creating webhooks
+
+HOOK_EVENTS = {
+        'customer.added' : 'silver.Customer.created+',
+        'subscription.added' : 'silver.Subscription.created+',
+        'subscription.updated' : 'silver.Subscription.updated+',
+}
+
+HOOK_DELIVERER = 'va_saas.webhooks.rest_hook_handler'
+#HOOK_FINDER = 'va_saas.webhooks'
+
+SILVER_PAYMENT_TOKEN_EXPIRATION = datetime.timedelta(days = 5)
+PAYMENT_METHOD_SECRET = "SECRET METHOD" 
+#CPAY stuff
+from .cpay_settings import CPAY_MERCHANT_ID, CPAY_MERCHANT_NAME, CPAY_PASSWORD
+
+try:
+    from custom_apps.settings import *
+except ImportError: 
+    pass
+#    print ('No custom apps settings. ')
+

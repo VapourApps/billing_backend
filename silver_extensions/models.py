@@ -12,25 +12,36 @@ class PlanFeatures(models.Model):
     plan = models.ForeignKey(Plan, on_delete = models.CASCADE, default = None)
 
     def __unicode__(self):
-        return 'Feature for ' + self.plan.__unicode__()
+        return 'Feature for ' + self.plan.__str__()
+
+    def __str__(self):
+        return self.__unicode__()
 
 
 class PlanSteps(models.Model):
     step_input_type = models.CharField(max_length = 20)
-    step_value = models.CharField(max_length = 30, blank = True)
+    step_value = models.CharField(max_length = 50, blank = True)
     step_name = models.CharField(max_length = 30)
     belongs_to = models.ForeignKey(PlanFeatures, on_delete = models.CASCADE)
 
     def __unicode__(self):
-        return 'Step type %s for %s' % (self.step_input_type, self.belongs_to.plan.__unicode__())
+        return 'Step type %s for %s' % (self.step_input_type, self.belongs_to.plan.__str__())
 
+    def __str__(self):
+        return self.__unicode__()
+
+
+class MappingType(models.Model):
+    name = models.CharField(max_length = 20)
+
+    def __unicode__(self):
+        return self.name
 
 class UserCustomerMapping(models.Model):
-    relation_type_choices = [('partner', 'Partner'), ('it_admin', 'IT Admin'), ('owner', 'Owner')]
 
     customer = models.ForeignKey(Customer, on_delete = models.CASCADE)
     user = models.ForeignKey(User, on_delete = models.CASCADE)
-    relation_type = models.CharField(max_length = 8, choices = relation_type_choices)
+    relation_type = models.ForeignKey(MappingType, on_delete = models.CASCADE)
 
     def __unicode__(self):
-        return 'Relation between %s and %s (%s)' % (self.customer.__unicode__(), self.user.__unicode__(), self.relation_type)
+        return 'Relation between %s and %s (%s)' % (self.customer.__unicode__(), self.user.__unicode__(), self.relation_type.name)

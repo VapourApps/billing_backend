@@ -20,6 +20,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
+import rest_framework_jwt.views as JWT
+
 
 
 from .models import CompanyPageLanding, CompanyPagePricing, CompanyPageAbout, CompanyPage, CompanyPageFeature, CompanyPageFeaturesList
@@ -27,8 +29,11 @@ from .serializers import UserSerializer, UserSerializerWithToken
 import requests, json
 
 from silver.models import Customer, Invoice
-from silver_extensions.models import UserCustomerMapping
+from silver_extensions.models import UserCustomerMapping, MappingType
+from va_purchase_project.va_settings import BILLING_FRONTEND
 
+def obtain_jwt_token(request):
+    return JWT.obtain_jwt_token(request)
 
 def check_activation_token(uidb64, token):
     try:
@@ -48,7 +53,7 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        return redirect('https://billing.vapour-apps.com/')
+        return redirect(BILLING_FRONTEND)
     else:
         return Response('Activation link is invalid!', status = 400)
 
@@ -80,8 +85,10 @@ def forgot_pass(request):
                 mail_subject, message, to=[to_email]
     )
     email.send()
+    data={"email": user_email, "password": random_pass}
+    return HttpResponse(json.dumps(data))
 
-    return Response('Sent mail to ' + str(user_email))
+    #return Response('Sent mail to ' + str(user_email))
 
 
 @api_view(['GET'])
@@ -119,7 +126,8 @@ def map_customer_user(request):
 
     customer = Customer.objects.filter(id = data['customer_id']).all()[0]
     relation_type = data['relation_type']
-    relation_type = UserCustomerMapping(customer = customer, user = request.user, relation_type = relation_type)
+    new_relation_type = MappingType.objects.filter(name = relation_type).all()[0]
+    relation_type = UserCustomerMapping(customer = customer, user = request.user, relation_type = new_relation_type)
     relation_type.save()
 
     return Response('Success!') 
@@ -136,7 +144,7 @@ def change_user_password(request):
         return Response('Could not authenticate user with supplied credentials. ', status = 401)
     user.set_password(data['new_password'])
     user.save()
-    return Response('Success!')
+    return Response('Success!');
 
 class UserList(APIView):
     """
@@ -147,8 +155,6 @@ class UserList(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
-        print ("Post data is : ", request.POST)
-        print ('Request data : ', request.data)
         serializer = UserSerializerWithToken(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -196,18 +202,17 @@ def get_invoices(request):
 
     user_relationship = UserCustomerMapping.objects.filter(user_id = request.user.id).all()
     customers = [x.customer for x in user_relationship]
-    invoices = []
+    invoices_result = []
     for customer in customers: 
 
-        invoice = Invoice.objects.filter(customer = customer).all()
-        if invoice:
-            invoice = invoice[0]
+        invoices = Invoice.objects.filter(customer = customer).all()
+        for invoice in invoices:
             invoice = {
-                x : str(getattr(invoice, x)) for x in ["kind", "related_document", "series", "number", "customer", "provider", "archived_customer", "archived_provider", "due_date", "issue_date", "paid_date", "cancel_date", "sales_tax_percent", "sales_tax_name", "currency", "transaction_currency", "transaction_xe_rate", "transaction_xe_date", "pdf", "state"]
+                x : str(getattr(invoice, x)) for x in ["kind", "related_document", "series", "number", "customer", "provider", "archived_customer", "archived_provider", "due_date", "issue_date", "paid_date", "cancel_date", "sales_tax_percent", "sales_tax_name", "currency", "transaction_currency", "transaction_xe_rate", "transaction_xe_date", "pdf", "state", "total"]
             }
-            invoices.append(invoice)
+            invoices_result.append(invoice)
 
-    data = {"success" : True, "message" : "", "data" : invoices}
+    data = {"success" : True, "message" : "", "data" : invoices_result}
     return HttpResponse(json.dumps(data))
    
 def get_plans(request):
@@ -234,3 +239,6 @@ def get_steps_for_company(request):
 
     return HttpResponse(data,content_type='application/json')
 
+# This is only a temporary url, so we can test the workflow before the actual billing part is complete
+def cpay_success(request):
+    return redirect(BILLING_FRONTEND)
