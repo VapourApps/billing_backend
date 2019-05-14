@@ -6,5 +6,5 @@ import importlib
 
 app_names = get_app_names()
 print (app_names)
-urlpatterns = [url('^%s/' % app, include('.%s.urls' % app)) for app in app_names]
+urlpatterns = [url('^%s/' % app, include('custom_apps.%s.urls' % app)) for app in app_names]
 

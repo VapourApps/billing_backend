@@ -69,7 +69,7 @@ INSTALLED_APPS = [
     'va_saas',
     'silver_extensions',
     'rest_hooks', 
-    'silver_cpay'
+    'silver_cpay',
 ]
 
 INSTALLED_APPS += get_custom_apps()
