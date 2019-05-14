@@ -6,41 +6,41 @@ from silver.models import Subscription
 
 #This is the very specific case where we have a subscription hook which creates a vm
 #We should definitely try and get this to be a general case but for the moment I guess not
-#This gets called if the webhook procced on subscription.added.new_vm. Then, if the subscription.metadata contains a "vm_data" field, it generates proper vm_data payload. 
+#This gets called if the webhook procced on subscription.added.new_vm. Then, if the subscription.metadata contains a "default_data" field, it generates proper default_data payload. 
 def subscription_vm_handler(hook, target, payload):
 
-    vm_data = {'server_name' : 'hook-test', u'username': u'root', u'network': u'eth0', u'image': u'3ad9f5f026cb', u'storage': u'500', u'provider_name': u'lxc', u'size': u'va-small', 'subscription_id' : payload['pk'], 'role' : 'va-master'}
+    default_data = {'server_name' : 'hook-test', u'username': u'root', u'network': u'eth0', u'image': u'va-master-img', u'storage': u'500', u'provider_name': u'lxc', u'size': u'va-small', 'subscription_id' : payload['pk'], 'role' : 'va-master'}
     print ('Payload', payload)
-#    vm_data = payload['fields']['meta']
-#    vm_data = json.loads(vm_data)
-#    novobox_name = vm_data.get('novobox_name', '')
-#    vm_data = vm_data.get('vm_data', {})
-#    vm_data['server_name'] = novobox_name
+#    default_data = payload['fields']['meta']
+#    default_data = json.loads(default_data)
+#    novobox_name = default_data.get('novobox_name', '')
+#    default_data = default_data.get('default_data', {})
+#    default_data['server_name'] = novobox_name
 
     print ('Headers : ', hook.headers)
     headers = json.loads(hook.headers) or {'Content-type' : "application/json"}
-    print ('Calling ', hook.method.lower(), ' on ', target,' with headers ', headers, ' and data ', vm_data)
+    print ('Calling ', hook.method.lower(), ' on ', target,' with headers ', headers, ' and data ', default_data)
 
     subscription = Subscription.objects.get(pk = payload['pk'])
 
     if subscription_should_create_vm(subscription):
         print ('Starting creating task')
-        vm_creation_task = threading.Thread(target = subscription_handle_vm_creation, args = [hook.method.lower(), target, headers, vm_data])
+        vm_creation_task = threading.Thread(target = subscription_handle_vm_creation, args = [hook.method.lower(), target, headers, default_data])
         vm_creation_task.start()
 #    print ('Starting (eventually) checking task')
 #    vm_check_status = threading.Thread(target = subscription_vm_check_status, args = [target, headers])
-    return vm_data
+    return default_data
 
 
 def subscription_should_create_vm(subscription):
     print ('Sub state ', subscription.state, ' vm data ', subscription.meta)
-    if subscription.state == 'active' and subscription.meta.get('vm_data') and not subscription.meta.get('vm_data', {}).get('status'):
+    if subscription.state == 'active' and subscription.meta.get('default_data') and not subscription.meta.get('default_data', {}).get('status'):
         print ('Starting vm!')
         return True
 
-def subscription_handle_vm_creation(method, target, headers, vm_data):
+def subscription_handle_vm_creation(method, target, headers, default_data):
     print ('In creation!, calling data')
-    data = getattr(requests, method)(target, verify = False, headers = headers, data = json.dumps(vm_data))
+    data = getattr(requests, method)(target, verify = False, headers = headers, data = json.dumps(default_data))
     print ('Finished!', data.text)
 
 
