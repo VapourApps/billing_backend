@@ -29,9 +29,9 @@ def change_subscription_status(request):
     data = json.loads(request.body)
     subscription_id, status = data['subscription_id'], data['status']
     subscription = Subscription.objects.get(pk = subscription_id)
-    vm_data = subscription.meta.get('vm_data', {})
-    vm_data['status'] = status
-    subscription.meta['vm_data'] =vm_data 
+    default_data = subscription.meta.get('default_data', {})
+    default_data['status'] = status
+    subscription.meta['default_data'] =default_data 
     subscription.save()
 
     return HttpResponse(status=204)
