@@ -17,18 +17,37 @@ class PlanFeatures(models.Model):
     def __str__(self):
         return self.__unicode__()
 
+    class Meta: 
+        verbose_name_plural = 'Plan Features'
 
-class PlanSteps(models.Model):
-    step_input_type = models.CharField(max_length = 20)
-    step_value = models.CharField(max_length = 50, blank = True)
-    step_name = models.CharField(max_length = 30)
+
+class PlanStep(models.Model):
+    name = models.CharField(max_length = 20)
     belongs_to = models.ForeignKey(PlanFeatures, on_delete = models.CASCADE)
 
     def __unicode__(self):
-        return 'Step type %s for %s' % (self.step_input_type, self.belongs_to.plan.__str__())
+        return self.name
+
+    def __str__(self): 
+        return self.__unicode__()
+
+    class Meta: 
+        verbose_name_plural = 'Plan Steps'
+
+class StepField(models.Model):
+    input_type = models.CharField(max_length = 20)
+    value = models.CharField(max_length = 50, blank = True)
+    name = models.CharField(max_length = 30)
+    belongs_to = models.ForeignKey(PlanStep, on_delete = models.CASCADE)
+
+    def __unicode__(self):
+        return self.name
 
     def __str__(self):
         return self.__unicode__()
+
+    class Meta: 
+        verbose_name_plural = 'Step Fields'
 
 
 class MappingType(models.Model):

@@ -48,6 +48,9 @@ def get_plans(request):
 
     result = []
 
+
+    #[{plan_name : "nesho", steps : [{"step_name" : "step_1" , "fields" : ["lista", "od", "polinja"]}, {"step_name" : "step_2", "fields" : ["lsita", "od", "polinja"]}]]
+
     for plan in plans: 
         plan_features = se.PlanFeatures.objects.filter(plan_id = plan.id).all()
         plan_result = model_to_dict(plan)
@@ -61,8 +64,11 @@ def get_plans(request):
                 'plan_image' : feature['plan_image'].url,
                 'plan_description' : feature['plan_description'], 
                 'plan_steps' : [
-                    {'input_type' : step.step_input_type, 'input_name' : step.step_name, 'input_value': step.step_value}
-                    for step in plan_feature.plansteps_set.all()]
+                        {
+                            "step_name" : step.name, "fields" : [{'input_type' : field.input_type, 'input_name' : field.name, 'input_value': field.value}  for field in step.stepfield_set.all()]
+                        }
+                        for step in plan_feature.planstep_set.all() 
+                ]
             }
             feature['plan_image'] = plan_feature.plan_image.url
 
