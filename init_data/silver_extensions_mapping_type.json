@@ -19,5 +19,26 @@
         "fields": {
             "name": "it_admin"
         }
+    },
+    {
+        "model": "silver_extensions.mappingtype",
+        "pk": 4,
+        "fields": {
+            "name": "fizicko_lice"
+        }
+    },
+    {
+        "model": "silver_extensions.mappingtype",
+        "pk": 5,
+        "fields": {
+            "name": "sysadmin"
+        }
+    },
+    {
+        "model": "silver_extensions.mappingtype",
+        "pk": 6,
+        "fields": {
+            "name": "shpediter"
+        }
     }
 ]

@@ -9,7 +9,6 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('silver', '0050_auto_20190527_1320'),
         ('silver_extensions', '0003_auto_20190527_1307'),
     ]
 

@@ -3,7 +3,7 @@
         "model": "silver_extensions.planfeatures",
         "pk": 8,
         "fields": {
-            "plan_image": "20170810-MScDataScience_hRrPfej.jpg",
+            "plan_image": "wallhaven-640676.jpg",
             "plan_description": "Multi-cloud dashboard<br/>VPN server<br/>Centralized log management<br/>Integrated 12 apps",
             "plan": 1
         }
@@ -12,8 +12,8 @@
         "model": "silver_extensions.planfeatures",
         "pk": 9,
         "fields": {
-            "plan_image": "DSC_8786_riHBgmC.JPG",
-            "plan_description": "Safsgadhg",
+            "plan_image": "index.png",
+            "plan_description": "Sample text for plan",
             "plan": 2
         }
     },
