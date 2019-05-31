@@ -66,7 +66,9 @@ class VAHook(AbstractHook):
 def rest_hook_handler(target, payload, instance, hook):
     print ("I have ", target, payload, instance, hook.__dict__, hook.target)
     
-    hook = VAHook.objects.filter(target = hook.target)[0]
+    hook = VAHook.objects.filter(target = hook.target)
+    if not hook: return
+    hook = hook[0]
 
     url_data = payload['data']
     print ('Pure data is : ', url_data)
