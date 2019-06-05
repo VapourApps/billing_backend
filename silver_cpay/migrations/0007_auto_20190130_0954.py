@@ -15,13 +15,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='payment_request',
             name='data',
-            field=models.CharField(default='{}', max_length=5000),
+            field=models.CharField(default='{}', max_length=50),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='payment_request',
             name='post_url',
-            field=models.CharField(default='', max_length=2083),
+            field=models.CharField(default='', max_length=208),
             preserve_default=False,
         ),
     ]

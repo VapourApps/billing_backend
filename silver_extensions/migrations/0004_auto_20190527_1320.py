@@ -18,15 +18,15 @@ class Migration(migrations.Migration):
             options={'verbose_name_plural': 'Plan Features'},
         ),
         migrations.AlterModelOptions(
-            name='plansteps',
+            name='planstep',
             options={'verbose_name_plural': 'Plan Steps'},
         ),
         migrations.AlterModelOptions(
-            name='stepfields',
+            name='stepfield',
             options={'verbose_name_plural': 'Step Fields'},
         ),
         migrations.AddField(
-            model_name='plansteps',
+            model_name='planstep',
             name='belongs_to',
             field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='silver.Plan'),
             preserve_default=False,
