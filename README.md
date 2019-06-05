@@ -40,5 +40,5 @@ python3 manage.py migrate
 python3 manage.py loaddata init_data/auth_user.json
 python3 manage.py loaddata init_data/va_saas_data.json
 python3 manage.py loaddata init_data/silver_data.json
-python3 manage.py loaddata init_dada/silver_extensions_data.json
+python3 manage.py loaddata init_data/silver_extensions_data.json
 ```

@@ -39,6 +39,10 @@ class StepField(models.Model):
     value = models.CharField(max_length = 50, blank = True)
     name = models.CharField(max_length = 30)
     belongs_to = models.ForeignKey(PlanStep, on_delete = models.CASCADE)
+    required = models.BooleanField(default = False)
+
+    verification_types = [('email', 'email'), ('file', 'file')]
+    verification = models.CharField(max_length = 10, choices = verification_types, null = True, blank = True, default = '')
 
     def __unicode__(self):
         return self.name
