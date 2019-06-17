@@ -26,7 +26,7 @@ def metered_feature_to_dict(metered_feature):
 #NOTE this may only be used for our billing workflow
 #as such it should probably be placed in a separate file
 def change_subscription_status(request):
-    data = json.loads(request.body)
+    data = request.json()
     subscription_id, status = data['subscription_id'], data['status']
     subscription = Subscription.objects.get(pk = subscription_id)
     default_data = subscription.meta.get('default_data', {})
@@ -36,6 +36,20 @@ def change_subscription_status(request):
 
     return HttpResponse(status=204)
 
+def edit_subscription(request):
+    data = json.loads( request.body.decode('utf-8') )
+    print ('Editing with : ', data)
+    subscription = s.Subscription.objects.get(pk =data['subscription_id'])
+    subscription.meta = data['metadata'];
+    subscription.save()
+    return JsonResponse({'success' : True, 'message' : 'Subscription edited successfuly. ', 'data' : {}})
+
+def delete_subscription(request):
+    data = json.loads( request.body.decode('utf-8') )
+    subscription = s.Subscription.objects.get(pk =data['subscription_id'])
+    subscription.delete()
+
+    return JsonResponse({'success' : True, 'message' : 'Subscription deleted successfuly. ', 'data' : {}})
 
 
 def get_plans(request):
@@ -91,13 +105,22 @@ def add_new_billing_log(request):
     return JsonResponse({"success" : True})
 
 
+#TODO add relation_type, but we need to agree on what format to use
+def get_customers_for_user(user):
+    user_relationship = se.UserCustomerMapping.objects.filter(user_id = user.id).all()
+    customers = []
+    for relation in user_relationship: 
+        c = model_to_dict(relation.customer)
+        c['relation_type'] = relation.relation_type.name
+        customers.append(c)
+#    customers = [model_to_dict(x.customer) for x in user_relationship]
+    return customers
+
 @api_view(['GET'])
 def get_customers(request):
     user = current_user(request._request)
-    user_relationship = se.UserCustomerMapping.objects.filter(user_id = request.user.id).all()
-
-    customers = [model_to_dict(x.customer) for x in user_relationship]
-    result = {'sucess' : True, 'data' : customers, 'message' : ''}
+    customers = get_customer_for_user(user)
+    result = {'success' : True, 'data' : customers, 'message' : ''}
     return JsonResponse(result)
 
 @api_view(['POST'])

@@ -6,6 +6,8 @@ urlpatterns = [
     url(r'get_customers', views.get_customers),
     url(r'get_subscriptions', views.get_subscriptions),
     url(r'edit_customer', views.edit_customer),
+    url(r'edit_subscription', views.edit_subscription),
+    url(r'delete_subscription', views.delete_subscription),
     url(r'pay_select/(?P<invoice_series>\d*)$', views.pay_select),
 #    url(r'pay_select/(?P<invoice_series>\d+)$', views.pay_select_url),
     url(r'pay_confirm', views.pay_confirm, name='pay-confirm'),

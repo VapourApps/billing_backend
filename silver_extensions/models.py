@@ -60,6 +60,9 @@ class MappingType(models.Model):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.__unicode__()
+
 class UserCustomerMapping(models.Model):
 
     customer = models.ForeignKey(Customer, on_delete = models.CASCADE)
@@ -68,3 +71,7 @@ class UserCustomerMapping(models.Model):
 
     def __unicode__(self):
         return 'Relation between %s and %s (%s)' % (self.customer.__unicode__(), self.user.__unicode__(), self.relation_type.name)
+
+    def __str__(self):
+        return 'Relation between %s and %s (%s)' % (self.customer.__str__(), self.user.__str__(), self.relation_type.name)
+
