@@ -132,8 +132,6 @@ dmypy.json
 # VA custom ignores
 
 # Creds and other files used in settings.py
-silver_extensions/migrations*
-va_saas/migrations*
 va_billing_venv
 custom_apps/*/
 custom_apps/settings.py
@@ -143,3 +141,5 @@ va_purchase_project/billing_settings.py
 va_purchase_project/email_settings.py
 va_purchase_project/db_settings.py
 *.db
+*.swp
+db.*

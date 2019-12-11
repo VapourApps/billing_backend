@@ -1,138 +1,231 @@
 [
-	{
-		"model": "silver_extensions.planfeatures",
-		"pk": 8,
-		"fields": {
-			"plan_image": "20170810-MScDataScience_hRrPfej.jpg",
-			"plan_description": "Multi-cloud dashboard<br/>VPN server<br/>Centralized log management<br/>Integrated 12 apps",
-			"plan": 1
-		}
-	},
-	{
-		"model": "silver_extensions.planfeatures",
-		"pk": 9,
-		"fields": {
-			"plan_image": "DSC_8786_riHBgmC.JPG",
-			"plan_description": "Safsgadhg",
-			"plan": 2
-		}
-	},
-	{
-		"model": "silver_extensions.planfeatures",
-		"pk": 10,
-		"fields": {
-			"plan_image": "Classifiers_Accuracy.png",
-			"plan_description": "TTTTTTTT",
-			"plan": 4
-		}
-	},
-	{
-		"model": "silver_extensions.planfeatures",
-		"pk": 11,
-		"fields": {
-			"plan_image": "Class_distribution.png",
-			"plan_description": "Support Description",
-			"plan": 3
-		}
-	},
-	{
-		"model": "silver_extensions.plansteps",
-		"pk": 8,
-		"fields": {
-			"step_input_type": "select",
-			"step_value": "small, medium",
-			"step_name": "Log management",
-			"belongs_to": 8
-		}
-	},
-	{
-		"model": "silver_extensions.plansteps",
-		"pk": 9,
-		"fields": {
-			"step_input_type": "checkbox",
-			"step_value": "directory, e-mail, proxy, clou",
-			"step_name": "Apps included",
-			"belongs_to": 8
-		}
-	},
-	{
-		"model": "silver_extensions.plansteps",
-		"pk": 10,
-		"fields": {
-			"step_input_type": "password",
-			"step_value": "",
-			"step_name": "Password",
-			"belongs_to": 8
-		}
-	},
-	{
-		"model": "silver_extensions.plansteps",
-		"pk": 11,
-		"fields": {
-			"step_input_type": "checkbox",
-			"step_value": "\u0433\u0440\u0430\u0434\u0435\u0436, \u0442\u0435\u043b\u0435\u043a\u043e\u043c, \u043e\u0431\u0440\u0430\u0437\u043e\u0432\u0430\u043d\u0438\u0435",
-			"step_name": "Dejnost",
-			"belongs_to": 8
-		}
-	},
-	{
-		"model": "silver_extensions.plansteps",
-		"pk": 12,
-		"fields": {
-			"step_input_type": "hidden",
-			"step_value": "default",
-			"step_name": "network",
-			"belongs_to": 8
-		}
-	},
-	{
-		"model": "silver_extensions.plansteps",
-		"pk": 13,
-		"fields": {
-			"step_input_type": "hidden",
-			"step_value": "debian-9.5.6-20181013",
-			"step_name": "image",
-			"belongs_to": 8
-		}
-	},
-	{
-		"model": "silver_extensions.mappingtype",
-		"pk": 1,
-		"fields": {
-			"name": "owner"
-		}
-	},
-	{
-		"model": "silver_extensions.mappingtype",
-		"pk": 2,
-		"fields": {
-			"name": "partner"
-		}
-	},
-	{
-		"model": "silver_extensions.mappingtype",
-		"pk": 3,
-		"fields": {
-			"name": "it_admin"
-		}
-	},
-	{
-		"model": "silver_extensions.usercustomermapping",
-		"pk": 1,
-		"fields": {
-			"customer": 1,
-			"user": 1,
-			"relation_type": 1
-		}
-	},
-	{
-		"model": "silver_extensions.usercustomermapping",
-		"pk": 2,
-		"fields": {
-			"customer": 2,
-			"user": 1,
-			"relation_type": 1
-		}
-	}
+    {
+        "fields": {
+            "name": "owner"
+        },
+        "model": "silver_extensions.mappingtype",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "name": "partner"
+        },
+        "model": "silver_extensions.mappingtype",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "name": "it_admin"
+        },
+        "model": "silver_extensions.mappingtype",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "name": "fizicko_lice"
+        },
+        "model": "silver_extensions.mappingtype",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "name": "sysadmin"
+        },
+        "model": "silver_extensions.mappingtype",
+        "pk": 5
+    },
+    {
+        "fields": {
+            "name": "shpediter"
+        },
+        "model": "silver_extensions.mappingtype",
+        "pk": 6
+    },
+
+    {
+        "fields": {
+            "customer": 1,
+            "relation_type": 1,
+            "user": 1
+        },
+        "model": "silver_extensions.usercustomermapping",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "customer": 2,
+            "relation_type": 1,
+            "user": 1
+        },
+        "model": "silver_extensions.usercustomermapping",
+        "pk": 2
+    },
+
+    {
+        "fields": {
+            "plan": 1,
+            "plan_description": "Multi-cloud dashboard<br/>VPN server<br/>Centralized log management<br/>Integrated 12 apps",
+            "plan_image": "wallhaven-640676.jpg"
+        },
+        "model": "silver_extensions.planfeatures",
+        "pk": 8
+    },
+    {
+        "fields": {
+            "plan": 2,
+            "plan_description": "Sample text for plan",
+            "plan_image": "index.png"
+        },
+        "model": "silver_extensions.planfeatures",
+        "pk": 9
+    },
+    {
+        "fields": {
+            "plan": 4,
+            "plan_description": "TTTTTTTT",
+            "plan_image": "Classifiers_Accuracy.png"
+        },
+        "model": "silver_extensions.planfeatures",
+        "pk": 10
+    },
+    {
+        "fields": {
+            "plan": 3,
+            "plan_description": "Support Description",
+            "plan_image": "Class_distribution.png"
+        },
+        "model": "silver_extensions.planfeatures",
+        "pk": 11
+    },
+
+    {
+        "fields": {
+            "belongs_to": 9,
+            "name": "General step"
+        },
+        "model": "silver_extensions.planstep",
+        "pk": 1
+    },
+
+    {
+        "fields": {
+            "belongs_to": 1,
+            "input_type": "select",
+            "name": "Log management",
+            "value": "small, medium"
+        },
+        "model": "silver_extensions.stepfield",
+        "pk": 8
+    },
+    {
+        "fields": {
+            "belongs_to": 1,
+            "input_type": "checkbox",
+            "name": "Apps included",
+            "value": "directory, e-mail, proxy, clou"
+        },
+        "model": "silver_extensions.stepfield",
+        "pk": 9
+    },
+    {
+        "fields": {
+            "belongs_to": 1,
+            "input_type": "password",
+            "name": "Password",
+            "value": ""
+        },
+        "model": "silver_extensions.stepfield",
+        "pk": 10
+    },
+    {
+        "fields": {
+            "belongs_to": 1,
+            "input_type": "checkbox",
+            "name": "Dejnost",
+            "value": "\u0433\u0440\u0430\u0434\u0435\u0436, \u0442\u0435\u043b\u0435\u043a\u043e\u043c, \u043e\u0431\u0440\u0430\u0437\u043e\u0432\u0430\u043d\u0438\u0435"
+        },
+        "model": "silver_extensions.stepfield",
+        "pk": 11
+    },
+    {
+        "fields": {
+            "belongs_to": 1,
+            "input_type": "hidden",
+            "name": "network",
+            "value": "default"
+        },
+        "model": "silver_extensions.stepfield",
+        "pk": 12
+    },
+    {
+        "fields": {
+            "belongs_to": 1,
+            "input_type": "hidden",
+            "name": "image",
+            "value": "debian-9.5.6-20181013"
+        },
+        "model": "silver_extensions.stepfield",
+        "pk": 13
+    },
+    {
+        "fields": {
+            "belongs_to": 1,
+            "input_type": "file",
+            "name": "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442 2",
+            "value": ""
+        },
+        "model": "silver_extensions.stepfield",
+        "pk": 15
+    },
+    {
+        "fields": {
+            "belongs_to": 1,
+            "input_type": "file",
+            "name": "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442 1",
+            "value": ""
+        },
+        "model": "silver_extensions.stepfield",
+        "pk": 16
+    },
+    {
+        "fields": {
+            "belongs_to": 1,
+            "input_type": "file",
+            "name": "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442 3",
+            "value": ""
+        },
+        "model": "silver_extensions.stepfield",
+        "pk": 17
+    },
+    {
+        "fields": {
+            "belongs_to": 1,
+            "input_type": "text",
+            "name": "\u0418\u043c\u0435 \u043d\u0430 \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u0458\u0430",
+            "value": ""
+        },
+        "model": "silver_extensions.stepfield",
+        "pk": 18
+    },
+    {
+        "fields": {
+            "belongs_to": 1,
+            "input_type": "multiplefile",
+            "name": "Multiple",
+            "value": ""
+        },
+        "model": "silver_extensions.stepfield",
+        "pk": 19
+    },
+    {
+        "fields": {
+            "belongs_to": 1,
+            "input_type": "multiplefile",
+            "name": "Multiple2",
+            "value": ""
+        },
+        "model": "silver_extensions.stepfield",
+        "pk": 20
+    }
 
 ]

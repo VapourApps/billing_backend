@@ -18,4 +18,6 @@ urlpatterns = [
     url(r'^get_features', views.get_features, name = 'get_features'),
     url(r'^get_invoices', views.get_invoices, name = 'get_invoices'),
 
+
+    url(r'^cpay_success', views.cpay_success), # This is only a temporary url, so we can test the workflow before the actual billing part is complete
 ]                                            

@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import json
 from rest_framework.decorators import api_view, permission_classes
+from datetime import date
 
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.forms.models import model_to_dict
 from django.core import serializers
 from silver import models as s
+from silver.models.subscriptions import BillingLog
 from va_saas.views import current_user
 from django.urls import reverse
 from silver_cpay.views import generate_cpay_form
@@ -15,7 +18,40 @@ from silver_halk.views import generate_halk_form
 
 from . import models as se
 from silver_cpay.models import Payment_Request
-from silver.models import Invoice
+from silver.models import Invoice, Subscription
+
+def metered_feature_to_dict(metered_feature):
+    data = {'name' : metered_feature.name, 'unit' : metered_feature.unit, 'price_per_unit' : metered_feature.price_per_unit, 'included_units' : metered_feature.included_units, 'product_code' : metered_feature.product_code.value}
+    return data
+
+#NOTE this may only be used for our billing workflow
+#as such it should probably be placed in a separate file
+def change_subscription_status(request):
+    data = request.json()
+    subscription_id, status = data['subscription_id'], data['status']
+    subscription = Subscription.objects.get(pk = subscription_id)
+    default_data = subscription.meta.get('default_data', {})
+    default_data['status'] = status
+    subscription.meta['default_data'] =default_data 
+    subscription.save()
+
+    return HttpResponse(status=204)
+
+def edit_subscription(request):
+    data = json.loads( request.body.decode('utf-8') )
+    print ('Editing with : ', data)
+    subscription = s.Subscription.objects.get(pk =data['subscription_id'])
+    subscription.meta = data['metadata'];
+    subscription.save()
+    return JsonResponse({'success' : True, 'message' : 'Subscription edited successfuly. ', 'data' : {}})
+
+def delete_subscription(request):
+    data = json.loads( request.body.decode('utf-8') )
+    subscription = s.Subscription.objects.get(pk =data['subscription_id'])
+    subscription.delete()
+
+    return JsonResponse({'success' : True, 'message' : 'Subscription deleted successfuly. ', 'data' : {}})
+
 
 def get_plans(request):
     enabled = request.GET.get('enabled', True)
@@ -27,14 +63,15 @@ def get_plans(request):
 
     result = []
 
-    #This field is not serialized by default, and is not required, so to avoid a bit of hassle, I'm just ignoring it
-    #There might be other fields. 
-    ignore_fields = ['metered_features']
+
+    #[{plan_name : "nesho", steps : [{"step_name" : "step_1" , "fields" : ["lista", "od", "polinja"]}, {"step_name" : "step_2", "fields" : ["lsita", "od", "polinja"]}]]
 
     for plan in plans: 
         plan_features = se.PlanFeatures.objects.filter(plan_id = plan.id).all()
-        plan_result = model_to_dict(plan) 
-
+        plan_result = model_to_dict(plan)
+        plan_result['plan_provider'] = model_to_dict(plan.provider) 
+        plan_result['metered_features'] = [metered_feature_to_dict(x) for x in plan.metered_features.all()]
+        plan_result['product_code'] = model_to_dict(plan.product_code)
         if plan_features:
             plan_feature = plan_features[0]
             feature = model_to_dict(plan_feature)
@@ -42,25 +79,49 @@ def get_plans(request):
                 'plan_image' : feature['plan_image'].url,
                 'plan_description' : feature['plan_description'], 
                 'plan_steps' : [
-                    {'input_type' : step.step_input_type, 'input_name' : step.step_name, 'input_value': step.step_value}
-                    for step in plan_feature.plansteps_set.all()]
+                        {
+                            "step_name" : step.name, "fields" : [{'input_type' : field.input_type, 'input_name' : field.name, 'input_value': field.value}  for field in step.stepfield_set.all()]
+                        }
+                        for step in plan_feature.planstep_set.all() 
+                ]
             }
             feature['plan_image'] = plan_feature.plan_image.url
 
             plan_result['feature'] = feature
-        plan_result = {x : plan_result[x] for x in plan_result if x not in ignore_fields}    
         result.append(plan_result)
 
     result = {'success' : True, 'data' : result, 'message' : ''}
     return JsonResponse(result)
 
+
+def add_new_billing_log(request):
+    data = json.loads(request.body.decode('utf-8'))
+    sub = Subscription.objects.get(pk = data['subscription_id'])
+    d = date.today()
+    b = BillingLog(subscription = sub, billing_date = d, metered_features_billed_up_to = d, plan_billed_up_to = d)
+    if data.get('proforma_id'):
+        proforma = s.Proforma.objects.get(pk = data['proforma_id'])
+        b.proforma = proforma
+    b.save()
+    return JsonResponse({"success" : True})
+
+
+#TODO add relation_type, but we need to agree on what format to use
+def get_customers_for_user(user):
+    user_relationship = se.UserCustomerMapping.objects.filter(user_id = user.id).all()
+    customers = []
+    for relation in user_relationship: 
+        c = model_to_dict(relation.customer)
+        c['relation_type'] = relation.relation_type.name
+        customers.append(c)
+#    customers = [model_to_dict(x.customer) for x in user_relationship]
+    return customers
+
 @api_view(['GET'])
 def get_customers(request):
     user = current_user(request._request)
-    user_relationship = se.UserCustomerMapping.objects.filter(user_id = request.user.id).all()
-
-    customers = [model_to_dict(x.customer) for x in user_relationship]
-    result = {'sucess' : True, 'data' : customers, 'message' : ''}
+    customers = get_customer_for_user(user)
+    result = {'success' : True, 'data' : customers, 'message' : ''}
     return JsonResponse(result)
 
 @api_view(['POST'])

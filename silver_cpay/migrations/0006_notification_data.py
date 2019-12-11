@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='notification',
             name='data',
-            field=models.CharField(default='{}', max_length=5000),
+            field=models.CharField(default='{}', max_length=50),
             preserve_default=False,
         ),
     ]

@@ -17,18 +17,41 @@ class PlanFeatures(models.Model):
     def __str__(self):
         return self.__unicode__()
 
+    class Meta: 
+        verbose_name_plural = 'Plan Features'
 
-class PlanSteps(models.Model):
-    step_input_type = models.CharField(max_length = 20)
-    step_value = models.CharField(max_length = 50, blank = True)
-    step_name = models.CharField(max_length = 30)
+
+class PlanStep(models.Model):
+    name = models.CharField(max_length = 20)
     belongs_to = models.ForeignKey(PlanFeatures, on_delete = models.CASCADE)
 
     def __unicode__(self):
-        return 'Step type %s for %s' % (self.step_input_type, self.belongs_to.plan.__str__())
+        return self.name
+
+    def __str__(self): 
+        return self.__unicode__()
+
+    class Meta: 
+        verbose_name_plural = 'Plan Steps'
+
+class StepField(models.Model):
+    input_type = models.CharField(max_length = 20)
+    value = models.CharField(max_length = 50, blank = True)
+    name = models.CharField(max_length = 30)
+    belongs_to = models.ForeignKey(PlanStep, on_delete = models.CASCADE)
+    required = models.BooleanField(default = False)
+
+    verification_types = [('email', 'email'), ('file', 'file')]
+    verification = models.CharField(max_length = 10, choices = verification_types, null = True, blank = True, default = '')
+
+    def __unicode__(self):
+        return self.name
 
     def __str__(self):
         return self.__unicode__()
+
+    class Meta: 
+        verbose_name_plural = 'Step Fields'
 
 
 class MappingType(models.Model):
@@ -36,6 +59,9 @@ class MappingType(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def __str__(self):
+        return self.__unicode__()
 
 class UserCustomerMapping(models.Model):
 
@@ -45,3 +71,7 @@ class UserCustomerMapping(models.Model):
 
     def __unicode__(self):
         return 'Relation between %s and %s (%s)' % (self.customer.__unicode__(), self.user.__unicode__(), self.relation_type.name)
+
+    def __str__(self):
+        return 'Relation between %s and %s (%s)' % (self.customer.__str__(), self.user.__str__(), self.relation_type.name)
+

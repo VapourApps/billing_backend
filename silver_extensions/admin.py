@@ -3,13 +3,13 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-from .models import PlanFeatures, PlanSteps, UserCustomerMapping, MappingType
+from .models import PlanFeatures, StepField, UserCustomerMapping, MappingType, PlanStep
 
 class PlanFeaturesAdmin(admin.ModelAdmin):
     model = PlanFeatures
 
-class PlanStepsAdmin(admin.ModelAdmin): 
-    model = PlanSteps
+class StepFieldAdmin(admin.ModelAdmin): 
+    model = StepField
 
 class MappingTypeAdmin(admin.ModelAdmin):
     model = MappingType
@@ -17,8 +17,11 @@ class MappingTypeAdmin(admin.ModelAdmin):
 class UserCustomerMappingAdmin(admin.ModelAdmin):
     model = UserCustomerMapping
 
+class PlanStepAdmin(admin.ModelAdmin):
+    model = PlanStep
 
 admin.site.register(PlanFeatures, PlanFeaturesAdmin)
-admin.site.register(PlanSteps, PlanStepsAdmin)
+admin.site.register(StepField, StepFieldAdmin)
 admin.site.register(UserCustomerMapping, UserCustomerMappingAdmin)
 admin.site.register(MappingType, MappingTypeAdmin)
+admin.site.register(PlanStep, PlanStepAdmin)

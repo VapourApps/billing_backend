@@ -32,7 +32,16 @@ from silver.models import Customer, Invoice
 from silver_extensions.models import UserCustomerMapping, MappingType
 from va_purchase_project.va_settings import BILLING_FRONTEND
 
+def get_confirmation_code(request):
+    #if not user_is_authenticated(request): return HTTPResponse(code = 403)
+    #content = generate_token()
+    #user_email = get_user_email(request)
+    #send_mail(user_email, content)
+    #return HTTPResponse(code = 200)
+    pass
+
 def obtain_jwt_token(request):
+    #if not code_is_correct(request): return HTTPResponse(code = 403)
     return JWT.obtain_jwt_token(request)
 
 def check_activation_token(uidb64, token):
@@ -239,4 +248,6 @@ def get_steps_for_company(request):
 
     return HttpResponse(data,content_type='application/json')
 
-
+# This is only a temporary url, so we can test the workflow before the actual billing part is complete
+def cpay_success(request):
+    return redirect(BILLING_FRONTEND)

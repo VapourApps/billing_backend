@@ -230,6 +230,7 @@ PAYMENT_PROCESSORS = {
 SILVER_AUTOMATICALLY_CREATE_TRANSACTIONS = True
 SILVER_DOCUMENT_PREFIX = 'documents/'
 SILVER_DOCUMENT_STORAGE = None
+SILVER_CURRENCY_CONVERTER = 'va_saas.VACurrencyConverter'
 PDF_GENERATION_TIME_LIMIT = 60
 
 TRANSACTION_SAVE_TIME_LIMIT = 5
@@ -262,6 +263,7 @@ MEDIA_URL = '/media/'
 HOOK_EVENTS = {
         'customer.added' : 'silver.Customer.created+',
         'subscription.added' : 'silver.Subscription.created+',
+        'subscription.updated' : 'silver.Subscription.updated+',
 }
 
 HOOK_DELIVERER = 'va_saas.webhooks.rest_hook_handler'
