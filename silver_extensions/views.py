@@ -11,6 +11,7 @@ from silver import models as s
 from va_saas.views import current_user
 from django.urls import reverse
 from silver_cpay.views import generate_cpay_form
+from silver_halk.views import generate_halk_form
 
 from . import models as se
 from silver_cpay.models import Payment_Request
@@ -175,7 +176,7 @@ def halk_payment_fail(request, halk_request_id=None):
 
 def halk_pay_select(request):
     # you custom code goes here
-    return render(request, 'silver_extensions/halk_pay_select.html', {
+    return render(request, 'silver_extensions/pay_select_halk.html', {
         'pay_confirm_url': request.build_absolute_uri(reverse('halk-pay-confirm')),
         'redirect_ok_url': request.build_absolute_uri(reverse('halk-pay-ok')),
         'redirect_fail_url': request.build_absolute_uri(reverse('halk-pay-fail'))
@@ -184,10 +185,10 @@ def halk_pay_select(request):
 
 def halk_pay_confirm(request):
     # you custom code goes here
-
+    
     # at the end call the generate_cpay_form from silver_cpay, to generate the cpay form
     # add the extra_context parameter for any additional template vars that you want
-    return generate_cpay_form(request, extra_context={
+    return generate_halk_form(request, extra_context={
         'custom_template_var_1': 'value_1',
         'custom_template_var_2': 'value_2',
     })

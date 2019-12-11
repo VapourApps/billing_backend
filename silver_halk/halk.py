@@ -17,8 +17,9 @@ class Halk:
 			{'name': 'storekey', 'is_required': True, 'max_length': 10},
 			{'name': 'storetype', 'is_required': True},
 			{'name': 'lang', 'is_required': True},
-			{'name': 'instalment', 'is_required': True},
-			{'name': 'transactionType', 'is_required': True},		
+			{'name': 'taksit', 'is_required': True},
+			{'name': 'islemtipi', 'is_required': True},
+			{'name': 'refreshtime', 'is_required':True}	
 		]
 
 		self.params = OrderedDict()
@@ -38,7 +39,7 @@ class Halk:
 			if param.get('max_length'):
 				self.params[param['name']] = self.params[param['name']][:param.get('max_length')]
 
-		self.params['randomValue'] = 'abv123abc'
+		self.params['rnd'] = '1555504777'
 
 		if is_testing:
 			self.url = "https://entegrasyon.asseco-see.com.tr/fim/est3Dgate"
@@ -57,15 +58,25 @@ class Halk:
 		hash_str += self.params['amount']
 		hash_str += self.params['okUrl']
 		hash_str += self.params['failUrl']
-		hash_str += self.params['transactionType']
-		hash_str += self.params['instalment']
-		hash_str += self.params['randomValue']
+		hash_str += self.params['islemtipi']
+		hash_str += self.params['taksit']
+		hash_str += self.params['rnd']
 		hash_str += self.params['storekey']
 
 		hash_value = hashlib.sha1(hash_str.encode('utf-8')).hexdigest()
-		hash_value = base64.b64encode(hash_value)
+		print(hash_str.encode('utf-8'))
+		print(hash_value)
+		print(hash_value.decode("hex"))
+		hash_value = base64.b64encode(hash_value.decode("hex"))
 
 		self.params['hash'] = hash_value
+
+		"""
+		$hashstr = $clientId . $oid . $amount . $okUrl . $failUrl .$transactionType. $instalment .$rnd . $storekey;
+
+		$hash = base64_encode(sha1($hashstr));
+		$hash = base64_encode(pack('H*',sha1($hashstr)));
+		"""
 
 	def prepare_params(self, post_data):
 
