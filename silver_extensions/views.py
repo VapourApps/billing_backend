@@ -18,6 +18,7 @@ from silver_halk.views import generate_halk_form
 
 from . import models as se
 from silver_cpay.models import Payment_Request
+from silver_halk.models import Halk_Payment_Request
 from silver.models import Invoice, Subscription
 
 def metered_feature_to_dict(metered_feature):
@@ -226,12 +227,12 @@ def pay_confirm(request, invoice_series= None):
 ############
 
 def halk_payment_ok(request, halk_request_id=None):
-    cpay_request = Payment_Request.objects.get(id=halk_request_id)
+    halk_request = Halk_Payment_Request.objects.get(id=halk_request_id)
     return HttpResponse("Your payment success page. Payment request ID:{}".format(cpay_request.id))
 
 
 def halk_payment_fail(request, halk_request_id=None):
-    cpay_request = Payment_Request.objects.get(id=halk_request_id)
+    halk_request = Halk_Payment_Request.objects.get(id=halk_request_id)
     return HttpResponse("Your payment fail page. Payment request ID: {}".format(cpay_request.id))
 
 

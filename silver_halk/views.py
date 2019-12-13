@@ -73,7 +73,7 @@ def generate_halk_parameters(request, extra_context = {}):
 	if len(customer_ids) > 1:
 		return {
 			'error': 'Can not generate payment parameters for invoices '
-				'and proformas belogning to multiple customers',
+				'and proformas belonging to multiple customers',
 			'status': status.HTTP_400_BAD_REQUEST
 		}
 
@@ -98,8 +98,7 @@ def generate_halk_parameters(request, extra_context = {}):
 	for proforma in proformas:
 		payment_request.proformas.add(proforma)
 
-	#order_id = request.POST.get('order_id')
-	order_id = '1555504777'
+	order_id = request.POST.get('order_id')
 
 	post_data = {
 		'clientId': halk_settings.HALK_CLIENT_ID,

@@ -19,6 +19,8 @@ except AttributeError:
 		'You must define a HALK_CLIENT_ID in order to use the silver_halk module'
 	)
 
-HALK_IS_TESTING = getattr(settings, 'HALK_IS_TESTING', False)
+HALK_ALLOWED_CURENCIES = ['MKD']
+
+HALK_IS_TESTING = getattr(settings, 'HALK_IS_TESTING', True)
 
 HALK_IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY = getattr(settings, 'IS_CREATE_PAYMENT_METHOD_AUTOMATICALLY', False)
