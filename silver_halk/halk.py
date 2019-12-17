@@ -50,8 +50,6 @@ class Halk:
 
 	def generate_checksum(self, params=None):
 
-		#$hash = base64_encode(pack('H*',sha1($hashstr)));
-
 		hash_str = ""
 		hash_str += self.params['clientId']
 		hash_str += self.params['oid']
@@ -64,40 +62,32 @@ class Halk:
 		hash_str += self.params['storekey']
 
 		hash_value = hashlib.sha1(hash_str.encode('utf-8')).hexdigest()
-		print(hash_str.encode('utf-8'))
-		print(hash_value)
-		print(hash_value.decode("hex"))
+
 		hash_value = base64.b64encode(hash_value.decode("hex"))
 
 		self.params['hash'] = hash_value
 
-		"""
-		$hashstr = $clientId . $oid . $amount . $okUrl . $failUrl .$transactionType. $instalment .$rnd . $storekey;
 
-		$hash = base64_encode(sha1($hashstr));
-		$hash = base64_encode(pack('H*',sha1($hashstr)));
-		"""
-
-	def prepare_params(self, post_data):
-
-		return_checksum_header = post_data['ReturnCheckSumHeader']
-		header_fields = return_checksum_header[2:].split(',')
-		header_fields = header_fields[:-1]
-		params_to_check = OrderedDict()
-
-		for field_name in header_fields:
-			params_to_check[field_name] = post_data[field_name]
-
-		self.params = params_to_check
+	
 
 	def validate_post_data(self, post_data):
 
-		self.prepare_params(post_data)
-		self.generate_checksum()
+		storekey = post_data['storekey']
 
-		if post_data['ReturnCheckSum'] == self.params['CheckSum'] \
-			and post_data['ReturnCheckSumHeader'] == self.params['CheckSumHeader']:
-			return True
+		hashparams = post_data['HASHPARAMS']
 
-		else:
+		hashparamsval = post_data["HASHPARAMSVAL"]
+		hashparam = post_data["HASH"]
+		paramsval = ""
+
+		for paramname in hashparams.split(':'):
+			paramsval += post_data.get(paramname, '')
+
+		hashval = paramsval + storekey
+		hashed = hashlib.sha1(hashval.encode('utf-8')).hexdigest()
+		hashed = base64.b64encode(hashed.decode("hex"))
+
+		if paramsval != hashparamsval or hashparam != hashed:
 			return False
+
+		return True

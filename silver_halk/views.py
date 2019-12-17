@@ -98,21 +98,20 @@ def generate_halk_parameters(request, extra_context = {}):
 	for proforma in proformas:
 		payment_request.proformas.add(proforma)
 
-	order_id = request.POST.get('order_id')
 
 	post_data = {
 		'clientId': halk_settings.HALK_CLIENT_ID,
-		'oid': str(order_id),
+		'oid': str(payment_request.id),
 		'amount': "{:.2f}".format(total),
-		'okUrl': payment_request.redirect_ok_url,
-		'failUrl': payment_request.redirect_fail_url,
+		'okUrl': request.build_absolute_uri(reverse('halk-payment-success')),
+		'failUrl': request.build_absolute_uri(reverse('halk-payment-fail')),
 		'currencyVal': '807',
 		'storekey': halk_settings.HALK_STORE_KEY,
 		'storetype': '3d_pay_hosting',
 		'lang': 'en',
 		'taksit': '',
 		'islemtipi': 'Auth',
-		'refreshtime': 10,
+		'refreshtime': 5,
 	}
 
 	halk_obj = Halk(is_testing=halk_settings.HALK_IS_TESTING, **post_data)
@@ -138,7 +137,7 @@ class Halk_View_Set(viewsets.ViewSet):
 			return JsonResponse(response.get('data'), status=response['status'])
 
 	def process_notification(self, request, status):
-		payment_request_id = int(request.data.get('Details2'))
+		payment_request_id = int(request.data.get('ReturnOid'))
 		payment_request = Halk_Payment_Request.objects.get(id=payment_request_id)
 		payment_request.status = status
 		payment_request.save()
@@ -178,7 +177,7 @@ class Halk_View_Set(viewsets.ViewSet):
 			# if there is a mismatch between the amount from halk, and the document total
 			# notify the admins and dont update the documents
 			# this is highly unlikely, but just in case
-			if int(total * 100) == int(request.data.get('AmountToPay')):
+			if int(total * 100) == int(float(request.data.get('amount'))):
 				for invoice in invoices:
 					if invoice.state != 'paid':
 						invoice.pay()

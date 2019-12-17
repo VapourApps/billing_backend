@@ -228,12 +228,14 @@ def pay_confirm(request, invoice_series= None):
 
 def halk_payment_ok(request, halk_request_id=None):
     halk_request = Halk_Payment_Request.objects.get(id=halk_request_id)
-    return HttpResponse("Your payment success page. Payment request ID:{}".format(cpay_request.id))
+    
+    return HttpResponse("Your payment success page. Payment request ID:{}".format(halk_request.id))
 
 
 def halk_payment_fail(request, halk_request_id=None):
     halk_request = Halk_Payment_Request.objects.get(id=halk_request_id)
-    return HttpResponse("Your payment fail page. Payment request ID: {}".format(cpay_request.id))
+    
+    return HttpResponse("Your payment fail page. Payment request ID: {}".format(halk_request.id))
 
 
 def halk_pay_select(request):
