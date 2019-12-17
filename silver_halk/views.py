@@ -100,13 +100,11 @@ def generate_halk_parameters(request, extra_context = {}):
 
 
 	post_data = {
-		'clientId': halk_settings.HALK_CLIENT_ID,
 		'oid': str(payment_request.id),
 		'amount': "{:.2f}".format(total),
 		'okUrl': request.build_absolute_uri(reverse('halk-payment-success')),
 		'failUrl': request.build_absolute_uri(reverse('halk-payment-fail')),
 		'currencyVal': '807',
-		'storekey': halk_settings.HALK_STORE_KEY,
 		'storetype': '3d_pay_hosting',
 		'lang': 'en',
 		'taksit': '',
@@ -114,7 +112,7 @@ def generate_halk_parameters(request, extra_context = {}):
 		'refreshtime': 5,
 	}
 
-	halk_obj = Halk(is_testing=halk_settings.HALK_IS_TESTING, **post_data)
+	halk_obj = Halk(halk_settings.HALK_STORE_KEY, halk_settings.HALK_CLIENT_ID, is_testing=halk_settings.HALK_IS_TESTING, **post_data)
 
 	payment_request.data = json.dumps(dict(halk_obj.params))
 	payment_request.post_url = halk_obj.url
@@ -137,12 +135,18 @@ class Halk_View_Set(viewsets.ViewSet):
 			return JsonResponse(response.get('data'), status=response['status'])
 
 	def process_notification(self, request, status):
-		payment_request_id = int(request.data.get('ReturnOid'))
+
+		payment_request_id = None
+		try:
+			payment_request_id = int(request.data.get('ReturnOid', request.data.get('oid')))
+		except TypeError:
+			return JsonResponse({'error': 'Invalid data'})
+
 		payment_request = Halk_Payment_Request.objects.get(id=payment_request_id)
 		payment_request.status = status
 		payment_request.save()
 
-		halk_obj = Halk(is_testing=halk_settings.HALK_IS_TESTING, **request.data)
+		halk_obj = Halk(halk_settings.HALK_STORE_KEY, halk_settings.HALK_CLIENT_ID, is_testing=halk_settings.HALK_IS_TESTING, **request.data)
 
 		data = {}
 		for key in request.data:
@@ -177,7 +181,7 @@ class Halk_View_Set(viewsets.ViewSet):
 			# if there is a mismatch between the amount from halk, and the document total
 			# notify the admins and dont update the documents
 			# this is highly unlikely, but just in case
-			if int(total * 100) == int(float(request.data.get('amount'))):
+			if int(total ) == int(float(request.data.get('amount'))):
 				for invoice in invoices:
 					if invoice.state != 'paid':
 						invoice.pay()
