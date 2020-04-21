@@ -41,4 +41,8 @@ python3 manage.py loaddata init_data/auth_user.json
 python3 manage.py loaddata init_data/va_saas_data.json
 python3 manage.py loaddata init_data/silver_data.json
 python3 manage.py loaddata init_data/silver_extensions_data.json
+
+#9. Create user and collectstatic
+python3 manage.py collectstatic
+python3 manage.py createsuperuser --username admin --email user@host.com
 ```
