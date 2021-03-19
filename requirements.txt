@@ -16,7 +16,7 @@ django-livefield==3.0.0
 django-model-utils==3.1.2
 django-rest-hooks==1.5.0
 django-silver==0.7.3
-djangorestframework==3.8.2
+djangorestframework==3.11.2
 djangorestframework-bulk==0.2.1
 djangorestframework-jwt==1.11.0
 enum34==1.1.6
